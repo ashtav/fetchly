@@ -102,6 +102,17 @@ class ResHandler {
         message = map['message'] ?? 'No message found';
         data = map['data'] ?? map;
 
+        // check property status in the response
+        // if property status is not found, make status code as the status
+
+        if (map['status'] != null) {
+          ok = map['status'] is bool ? map['status'] : okStatus.contains(statusCode);
+        } else {
+          ok = okStatus.contains(statusCode);
+        }
+
+        // if statis code is 500, we need to get the error message from the server
+
         if (statusCode == 500) {
           message = 'Internal server error';
         } else if (statusCode == 422) {
