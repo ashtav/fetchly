@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 import 'screens/todo_view.dart';
 
 void main() {
-
   UseFetchly(
-    baseUrl: 'https://dummyjson.com/',
-    onRequest: (status, data){
-      // listen request
-    },
-    onError: (e, s){
-      // listen error
-    }
-  ).init();
+          baseUrl: 'https://dummyjson.com/',
+          onRequest: (status, data) {
+            // listen request
+          },
+          onError: (e, s) {
+            // listen error
+          })
+      .init();
 
   runApp(const MyApp());
 }

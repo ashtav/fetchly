@@ -23,7 +23,8 @@ class ResHandler {
 
   ResHandler({this.status = false, this.message, this.data, this.body});
 
-  Future<ResHandler> check(Response response, int time, {Function(int statusCode, dynamic data)? onRequest}) async {
+  Future<ResHandler> check(Response response, int time,
+      {Function(int statusCode, dynamic data)? onRequest}) async {
     RequestOptions req = response.requestOptions;
 
     // request information
@@ -121,6 +122,10 @@ class ResHandler {
     }
 
     onRequest?.call(statusCode ?? 0, responseData);
-    return ResHandler(status: ok, message: message ?? response.statusMessage, data: data, body: responseData);
+    return ResHandler(
+        status: ok,
+        message: message ?? response.statusMessage,
+        data: data,
+        body: responseData);
   }
 }
