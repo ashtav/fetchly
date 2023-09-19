@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'screens/todo_view.dart';
 
 void main() {
-
   Fetchly.init(
     baseUrl: 'https://dummyjson.com/',
-    onRequest: (status, data) {},
+    onRequest: (path, status, data) {},
   );
 
   // to set token in header when user logged in
@@ -21,7 +20,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       title: 'Fetchly Demo',
       theme: ThemeData(

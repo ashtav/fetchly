@@ -10,9 +10,9 @@ To use this plugin, add `fetchly` as a [dependency in your pubspec.yaml file](ht
 ```dart 
 
 void main() {
-  Fetchly.instance.init(
+  Fetchly.init(
     baseUrl: 'https://dummyjson.com/',
-    onRequest: (status, data){
+    onRequest: (path, status, data){
       // listen request
     },
     onError: (e, s){
@@ -50,6 +50,19 @@ class MyClass with UseApi {
         ResHandler res = await todoApi.getTodos();
     }
 }
+```
+
+### Methods
+
+Provide some methods that you can use
+
+```dart
+// The `init` method is used to initialize Fetchly with a baseUrl and callbacks for onRequest and onError.
+Fetchly.init(); 
+
+// The `setHeader` method is used to set headers such as Authorization.
+// You can also use dio.setToken('your_token') to set a token.
+Fetchly.setHeader({});
 ```
 
 For more information and examples, see the [example](https://github.com/ashtav/fetchly/tree/master/example).

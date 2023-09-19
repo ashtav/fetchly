@@ -30,6 +30,18 @@ class _TodoViewState extends State<TodoView> {
     }
   }
 
+  Future login() async {
+    try {
+      ResHandler res = await api
+          .login({'email': 'admin@gmail.com', 'password': 'secret0sdfs'});
+
+      print(res.toMap());
+      print('------ ${res.message}');
+    } catch (e, s) {
+      print('Error: $e, StackTrace: $s');
+    }
+  }
+
   @override
   void initState() {
     getTodos();
@@ -42,6 +54,11 @@ class _TodoViewState extends State<TodoView> {
       appBar: AppBar(
         title: const Text('Todo'),
         actions: [
+          IconButton(
+              onPressed: () {
+                login();
+              },
+              icon: const Icon(Icons.account_circle)),
           IconButton(
               onPressed: () {
                 api.cancel('todos');

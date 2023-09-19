@@ -1,5 +1,10 @@
 part of fetch;
 
+/// A configuration manager for Fetchly.
+///
+/// This section of code manages the base URL, headers, request listener,
+/// error listener, Dio tokens, and Dio configuration options for Fetchly.
+
 // manage base url
 String _baseUrl = '';
 
@@ -10,7 +15,7 @@ Map<String, dynamic> _header = {
 };
 
 // manage request listener
-void Function(int status, dynamic data)? _onRequest;
+void Function(String path, int status, dynamic data)? _onRequest;
 
 // manage error listener
 void Function(Object, StackTrace)? _onError;
@@ -18,6 +23,10 @@ void Function(Object, StackTrace)? _onError;
 // manage dio token
 Map<String, CancelToken> _cancelTokens = {};
 
+/// Get Dio options with configurable parameters.
+///
+/// This method returns a [BaseOptions] object with various parameters
+/// set, including the base URL, headers, timeouts, and more for the Dio client.
 BaseOptions dioOptions({String? baseUrl}) => BaseOptions(
     followRedirects: false,
     baseUrl: _baseUrl,
@@ -27,21 +36,8 @@ BaseOptions dioOptions({String? baseUrl}) => BaseOptions(
     responseType: ResponseType.plain,
     validateStatus: (status) => status! <= 598);
 
+/// The Dio client instance with the configured options.
+///
+/// This Dio client instance is initialized with the Dio options
+/// configured in [dioOptions].
 Dio dio = Dio(dioOptions());
-
-// class UseFetchly {
-//   final String? baseUrl;
-//   final Map<String, dynamic>? header;
-//   final Function(int statusCode, dynamic data)? onRequest;
-//   final Function(Object error, StackTrace trace)? onError;
-
-//   UseFetchly({this.baseUrl, this.header, this.onRequest, this.onError});
-
-//   void init() {
-//     _baseUrl = baseUrl ?? '';
-//     _header = header ??
-//         {'Accept': 'application/json', 'Content-Type': 'application/json'};
-//     _onRequest = onRequest;
-//     _onError = onError;
-//   }
-// }

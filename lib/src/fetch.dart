@@ -40,7 +40,7 @@ class Fetchly extends ResHandler {
       stopWatch.stop();
       result = await check(response, stopWatch.elapsed.inMilliseconds,
           onRequest: (status, data) {
-        _onRequest?.call(status, data);
+        _onRequest?.call(path, status, data);
       });
     } catch (e, s) {
       _onError?.call(e, s);
@@ -111,7 +111,7 @@ class Fetchly extends ResHandler {
   static void init(
       {String? baseUrl,
       Map<String, dynamic>? header,
-      void Function(int status, dynamic data)? onRequest,
+      void Function(String path, int status, dynamic data)? onRequest,
       void Function(Object error, StackTrace trace)? onError}) {
     _baseUrl = baseUrl ?? '';
     _header = header ??

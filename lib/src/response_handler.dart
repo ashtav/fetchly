@@ -16,6 +16,17 @@
 
 part of fetch;
 
+/// A utility class for handling HTTP response data.
+///
+/// The `ResHandler` class is used to encapsulate information commonly found in
+/// HTTP responses, such as status, messages, data, and the raw response body.
+///
+/// Parameters:
+///   - [status]: A boolean indicating the status of the response. Default is `false`.
+///   - [message]: An optional message associated with the response.
+///   - [data]: The data payload of the response.
+///   - [body]: The raw response body, which can be of any data type.
+
 class ResHandler {
   final bool status;
   final String? message;
@@ -23,6 +34,11 @@ class ResHandler {
 
   ResHandler({this.status = false, this.message, this.data, this.body});
 
+  /// A function to check and process an HTTP response.
+  ///
+  /// This function is used to examine an HTTP response and process it based on
+  /// various criteria, such as status code, response time, and an optional
+  /// [onRequest] callback.
   Future<ResHandler> check(Response response, int time,
       {Function(int statusCode, dynamic data)? onRequest}) async {
     RequestOptions req = response.requestOptions;
@@ -106,7 +122,9 @@ class ResHandler {
         // if property status is not found, make status code as the status
 
         if (map['status'] != null) {
-          ok = map['status'] is bool ? map['status'] : okStatus.contains(statusCode);
+          ok = map['status'] is bool
+              ? map['status']
+              : okStatus.contains(statusCode);
         } else {
           ok = okStatus.contains(statusCode);
         }
@@ -139,4 +157,7 @@ class ResHandler {
         data: data,
         body: responseData);
   }
+
+  Map<String, dynamic> toMap() =>
+      {'status': status, 'message': message, 'data': data};
 }
