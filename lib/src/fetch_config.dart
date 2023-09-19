@@ -10,10 +10,10 @@ Map<String, dynamic> _header = {
 };
 
 // manage request listener
-Function(int, dynamic)? _onRequest;
+void Function(int status, dynamic data)? _onRequest;
 
 // manage error listener
-Function(Object, StackTrace)? _onError;
+void Function(Object, StackTrace)? _onError;
 
 // manage dio token
 Map<String, CancelToken> _cancelTokens = {};
@@ -29,19 +29,19 @@ BaseOptions dioOptions({String? baseUrl}) => BaseOptions(
 
 Dio dio = Dio(dioOptions());
 
-class UseFetchly {
-  final String? baseUrl;
-  final Map<String, dynamic>? header;
-  final Function(int statusCode, dynamic data)? onRequest;
-  final Function(Object error, StackTrace trace)? onError;
+// class UseFetchly {
+//   final String? baseUrl;
+//   final Map<String, dynamic>? header;
+//   final Function(int statusCode, dynamic data)? onRequest;
+//   final Function(Object error, StackTrace trace)? onError;
 
-  UseFetchly({this.baseUrl, this.header, this.onRequest, this.onError});
+//   UseFetchly({this.baseUrl, this.header, this.onRequest, this.onError});
 
-  void init() {
-    _baseUrl = baseUrl ?? '';
-    _header = header ??
-        {'Accept': 'application/json', 'Content-Type': 'application/json'};
-    _onRequest = onRequest;
-    _onError = onError;
-  }
-}
+//   void init() {
+//     _baseUrl = baseUrl ?? '';
+//     _header = header ??
+//         {'Accept': 'application/json', 'Content-Type': 'application/json'};
+//     _onRequest = onRequest;
+//     _onError = onError;
+//   }
+// }

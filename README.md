@@ -10,7 +10,7 @@ To use this plugin, add `fetchly` as a [dependency in your pubspec.yaml file](ht
 ```dart 
 
 void main() {
-  UseFetchly(
+  Fetchly.instance.init(
     baseUrl: 'https://dummyjson.com/',
     onRequest: (status, data){
       // listen request
@@ -18,7 +18,7 @@ void main() {
     onError: (e, s){
       // listen error
     }
-  ).init();
+  );
 
   runApp(const MyApp());
 }

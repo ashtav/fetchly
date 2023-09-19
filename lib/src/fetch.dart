@@ -10,7 +10,11 @@ part 'extension.dart';
 part 'fetch_config.dart';
 part 'response_handler.dart';
 
-abstract class Fetchly extends ResHandler {
+class Fetchly extends ResHandler {
+  Fetchly();
+  static final Fetchly instance = Fetchly();
+
+
   Future<ResHandler> _fetch(String method, String path,
       {Map<String, dynamic>? query,
       dynamic data,
@@ -102,5 +106,35 @@ abstract class Fetchly extends ResHandler {
 
   void cancel(String path) {
     _cancelTokens[path]?.cancel('Request for $path is canceled');
+  }
+
+  /// ``` dart
+  ///
+  /// ```
+
+  Fetchly init(
+      {String? baseUrl,
+      Map<String, dynamic>? header,
+      void Function(int status, dynamic data)? onRequest,
+      void Function(Object error, StackTrace trace)? onError}) {
+    _baseUrl = baseUrl ?? '';
+    _header = header ??
+        {'Accept': 'application/json', 'Content-Type': 'application/json'};
+    _onRequest = onRequest;
+    _onError = onError;
+
+    return this;
+  }
+
+  /// ``` dart
+  /// Fetchly.setHeader({'Authorization': 'Bearer token'});
+  /// ```
+
+  void setHeader(Map<String, dynamic> header, {bool merge = false}) {
+    if (merge) {
+      return _header.addAll(header);
+    }
+
+    _header = header;
   }
 }
