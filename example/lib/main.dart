@@ -5,10 +5,13 @@ import 'screens/todo_view.dart';
 
 void main() {
 
-  Fetchly.instance.init(
+  Fetchly.init(
     baseUrl: 'https://dummyjson.com/',
     onRequest: (status, data) {},
-  ).setHeader({'Authorization': 'Bearer token'});
+  );
+
+  // to set token in header when user logged in
+  dio.setToken('token_value');
 
   runApp(const MyApp());
 }

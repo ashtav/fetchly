@@ -11,10 +11,6 @@ part 'fetch_config.dart';
 part 'response_handler.dart';
 
 class Fetchly extends ResHandler {
-  Fetchly();
-  static final Fetchly instance = Fetchly();
-
-
   Future<ResHandler> _fetch(String method, String path,
       {Map<String, dynamic>? query,
       dynamic data,
@@ -109,10 +105,10 @@ class Fetchly extends ResHandler {
   }
 
   /// ``` dart
-  ///
+  /// Fetchly.init(baseUrl: 'https://dummyjson.com/');
   /// ```
 
-  Fetchly init(
+  static void init(
       {String? baseUrl,
       Map<String, dynamic>? header,
       void Function(int status, dynamic data)? onRequest,
@@ -122,16 +118,16 @@ class Fetchly extends ResHandler {
         {'Accept': 'application/json', 'Content-Type': 'application/json'};
     _onRequest = onRequest;
     _onError = onError;
-
-    return this;
   }
 
   /// ``` dart
   /// Fetchly.setHeader({'Authorization': 'Bearer token'});
   /// ```
 
-  void setHeader(Map<String, dynamic> header, {bool merge = false}) {
+  static void setHeader(Map<String, dynamic> header, {bool merge = true}) {
     if (merge) {
+      // prevent duplicate header
+      header.removeWhere((key, value) => _header.containsKey(key));
       return _header.addAll(header);
     }
 
