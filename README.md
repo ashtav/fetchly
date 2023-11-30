@@ -48,6 +48,9 @@ mixin UseApi {
 class MyClass with UseApi {
     Future getTodos() async {
         ResHandler res = await todoApi.getTodos();
+
+        // to cancel request, use
+        todoApi.cancel('todos'); // todos is path name
     }
 }
 ```

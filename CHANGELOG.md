@@ -5,3 +5,7 @@
 ## 0.0.2
 
 * improvement and bug fixes
+
+## 0.0.3
+
+* improvement and bug fixes

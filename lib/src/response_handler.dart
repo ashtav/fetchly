@@ -95,8 +95,10 @@ class ResHandler {
     // statusCode = null is usually when the server is not available or request is timeout
     if (statusCode != null) {
       // print request information
+      final now = DateTime.now();
+      final dateTime = Utils.dateFormat(now);
 
-      logg('\n== BASE URL : $baseUrl');
+      logg('\n== $dateTime | $baseUrl');
       logg(debugMessage, color: LogColor.cyan, limit: dio.logLimit);
     }
 

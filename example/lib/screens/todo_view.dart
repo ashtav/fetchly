@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:developer';
+
 import 'package:example/data/todo_api.dart';
 import 'package:fetchly/fetchly.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +34,12 @@ class _TodoViewState extends State<TodoView> {
 
   Future login() async {
     try {
+      log('-- loading');
       ResHandler res = await api
           .login({'email': 'admin@gmail.com', 'password': 'secret0sdfs'});
 
-      print(res.toMap());
-      print('------ ${res.message}');
+      log(res.toMap().toString());
+      log('------ ${res.message}');
     } catch (e, s) {
       print('Error: $e, StackTrace: $s');
     }
