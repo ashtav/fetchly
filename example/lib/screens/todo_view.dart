@@ -45,6 +45,11 @@ class _TodoViewState extends State<TodoView> {
     }
   }
 
+  Future error500() async {
+    String url = 'http://httpstat.us/500';
+    ResHandler res = await api.get(url);
+  }
+
   @override
   void initState() {
     getTodos();
@@ -57,6 +62,11 @@ class _TodoViewState extends State<TodoView> {
       appBar: AppBar(
         title: const Text('Todo'),
         actions: [
+          IconButton(
+              onPressed: () {
+                error500();
+              },
+              icon: const Icon(Icons.error)),
           IconButton(
               onPressed: () {
                 login();

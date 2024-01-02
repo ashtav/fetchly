@@ -1,3 +1,4 @@
+import 'package:example/request_handler.dart';
 import 'package:fetchly/fetchly.dart';
 import 'package:flutter/material.dart';
 
@@ -5,9 +6,9 @@ import 'screens/todo_view.dart';
 
 void main() {
   Fetchly.init(
-    baseUrl: 'https://dummyjson.com/',
-    onRequest: (path, status, data) {},
-  );
+      baseUrl: 'https://dummyjson.com/',
+      onRequest: RequestHandler.onRequest,
+      onError: RequestHandler.onError);
 
   // to set token in header when user logged in
   dio.setToken('token_value');

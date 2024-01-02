@@ -31,8 +31,10 @@ class ResHandler {
   final bool status;
   final String? message;
   final dynamic data, body;
+  final Request? request;
 
-  ResHandler({this.status = false, this.message, this.data, this.body});
+  ResHandler(
+      {this.status = false, this.message, this.data, this.body, this.request});
 
   /// A function to check and process an HTTP response.
   ///
@@ -91,6 +93,7 @@ class ResHandler {
     }
 
     String debugMessage = consoleMessages.map((e) => '-- $e\n').join();
+    String logMessage = '';
 
     // statusCode = null is usually when the server is not available or request is timeout
     if (statusCode != null) {
@@ -98,7 +101,10 @@ class ResHandler {
       final now = DateTime.now();
       final dateTime = Utils.dateFormat(now);
 
-      logg('\n== $dateTime | $baseUrl');
+      String dtBaseUrl = '== $dateTime | $baseUrl';
+      logMessage = '$dtBaseUrl\n$debugMessage';
+
+      logg('\n$dtBaseUrl');
       logg(debugMessage, color: LogColor.cyan, limit: dio.logLimit);
     }
 
@@ -157,7 +163,9 @@ class ResHandler {
         status: ok,
         message: message ?? response.statusMessage,
         data: data,
-        body: responseData);
+        body: responseData,
+        request:
+            Request(url: baseUrl + path, header: req.headers, log: logMessage));
   }
 
   Map<String, dynamic> toMap() =>

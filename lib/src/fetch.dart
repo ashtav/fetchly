@@ -3,6 +3,7 @@ library fetch;
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:fetchly/models/Request.dart';
 import 'package:fetchly/utils/utils.dart';
 
 import '../utils/log.dart';
