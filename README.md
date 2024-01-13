@@ -1,4 +1,4 @@
-Fetchly is a lightweight Dart package designed to streamline your API interactions by simplifying the usage of the Dio HTTP client. It provides an easy-to-use, type-safe, and efficient wrapper around Dio, making your HTTP calls and response handling smooth and hassle-free.
+Fetchly is a lightweight Dart package designed to streamline your API interactions, making the use of the Dio HTTP client simpler and more efficient. It offers an easy-to-use, type-safe, and efficient wrapper around Dio, ensuring your HTTP calls and response handling are smooth and hassle-free. Additionally, Fetchly enhances the development experience by displaying vital request information such as the path, method, duration, and payload, exclusively in development mode. This feature enables developers to easily monitor and understand the requests made within their application, aiding in effective debugging and development.
 
 ## Usage
 
@@ -17,7 +17,8 @@ void main() {
     },
     onError: (e, s){
       // listen error
-    }
+    },
+    printType: PrintType.print // available: log, print, none
   );
 
   runApp(const MyApp());
@@ -40,12 +41,12 @@ class TodoApi extends Fetchly {
 In this code snippet, we're using Dart's mixin feature to create a reusable block of code named UseApi.
 
 ```dart
-mixin UseApi {
+mixin Apis {
     TodoApi todoApi = TodoApi();
     // other api
 }
 
-class MyClass with UseApi {
+class MyClass with Apis {
     Future getTodos() async {
         ResHandler res = await todoApi.getTodos();
 

@@ -1,15 +1,5 @@
-## 0.0.1
+## 0.0.5
 
-* first release
-
-## 0.0.2
-
-* improvement and bug fixes
-
-## 0.0.3
-
-* improvement and bug fixes
-
-## 0.0.4
-
+* print type
+* documentation
 * improvement and bug fixes

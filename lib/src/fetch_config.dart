@@ -23,6 +23,9 @@ void Function(Object, StackTrace)? _onError;
 // manage dio token
 Map<String, CancelToken> _cancelTokens = {};
 
+// print type
+PrintType _printType = PrintType.log;
+
 /// Get Dio options with configurable parameters.
 ///
 /// This method returns a [BaseOptions] object with various parameters

@@ -2,8 +2,10 @@ library fetch;
 
 import 'dart:convert';
 
+import 'package:ansicolor/ansicolor.dart';
 import 'package:dio/dio.dart';
-import 'package:fetchly/models/Request.dart';
+import 'package:fetchly/models/request.dart';
+import 'package:fetchly/src/enum.dart';
 import 'package:fetchly/utils/utils.dart';
 
 import '../utils/log.dart';
@@ -114,12 +116,14 @@ class Fetchly extends ResHandler {
       {String? baseUrl,
       Map<String, dynamic>? header,
       void Function(String path, int status, dynamic data)? onRequest,
-      void Function(Object error, StackTrace trace)? onError}) {
+      void Function(Object error, StackTrace trace)? onError,
+      PrintType printType = PrintType.log}) {
     _baseUrl = baseUrl ?? '';
     _header = header ??
         {'Accept': 'application/json', 'Content-Type': 'application/json'};
     _onRequest = onRequest;
     _onError = onError;
+    _printType = printType;
   }
 
   /// ``` dart

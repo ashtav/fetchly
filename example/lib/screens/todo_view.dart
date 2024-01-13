@@ -35,8 +35,8 @@ class _TodoViewState extends State<TodoView> {
   Future login() async {
     try {
       log('-- loading');
-      ResHandler res = await api
-          .login({'email': 'admin@gmail.com', 'password': 'secret0sdfs'});
+      ResHandler res =
+          await api.login({'username': 'kminchelle', 'password': '0lelplR'});
 
       log(res.toMap().toString());
       log('------ ${res.message}');
@@ -48,6 +48,7 @@ class _TodoViewState extends State<TodoView> {
   Future error500() async {
     String url = 'http://httpstat.us/500';
     ResHandler res = await api.get(url);
+    print(res.message);
   }
 
   @override

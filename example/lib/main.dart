@@ -8,7 +8,8 @@ void main() {
   Fetchly.init(
       baseUrl: 'https://dummyjson.com/',
       onRequest: RequestHandler.onRequest,
-      onError: RequestHandler.onError);
+      onError: RequestHandler.onError,
+      printType: PrintType.print);
 
   // to set token in header when user logged in
   dio.setToken('token_value');

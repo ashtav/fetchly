@@ -104,8 +104,22 @@ class ResHandler {
       String dtBaseUrl = '== $dateTime | $baseUrl';
       logMessage = '$dtBaseUrl\n$debugMessage';
 
-      logg('\n$dtBaseUrl');
-      logg(debugMessage, color: LogColor.cyan, limit: dio.logLimit);
+      if (_printType == PrintType.log) {
+        logg('\n$dtBaseUrl');
+        logg(debugMessage, color: LogColor.cyan, limit: dio.logLimit);
+      } else if (_printType == PrintType.print) {
+        ansiColorDisabled = false;
+        AnsiPen pen = AnsiPen()..cyan(),
+            pen2 = AnsiPen()
+              ..white()
+              ..cyan(bg: true);
+
+        devPrint(pen2(dtBaseUrl));
+
+        debugMessage.split('\n').forEach((line) {
+          devPrint(pen(line));
+        });
+      }
     }
 
     List<int> okStatus = [200, 201, 202];
