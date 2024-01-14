@@ -56,15 +56,23 @@ class Fetchly extends ResHandler {
   }
 
   /// ``` dart
+  /// ResHandler res = await fetch('GET', 'user', onReceiveProgress: (a, b) {});
+  /// ```
+
+  Future<ResHandler> fetch(String method, String path,
+      {Map<String, dynamic>? query,
+      dynamic data,
+      Function(int, int)? onReceiveProgress}) async {
+    return await _fetch(method, path,
+        query: query, data: data, onReceiveProgress: onReceiveProgress);
+  }
+
+  /// ``` dart
   /// ResHandler res = await get('user');
   /// ```
 
-  Future<ResHandler> get(String path,
-      {Map<String, dynamic>? query,
-      Options? options,
-      Function(int, int)? onReceiveProgress}) async {
-    return await _fetch('GET', path,
-        query: query, onReceiveProgress: onReceiveProgress);
+  Future<ResHandler> get(String path, [Map<String, dynamic>? query]) async {
+    return await _fetch('GET', path, query: query);
   }
 
   /// ``` dart
@@ -101,7 +109,7 @@ class Fetchly extends ResHandler {
   }
 
   /// ``` dart
-  ///
+  /// cancel('<path>');
   /// ```
 
   void cancel(String path) {
@@ -117,7 +125,7 @@ class Fetchly extends ResHandler {
       Map<String, dynamic>? header,
       void Function(String path, int status, dynamic data)? onRequest,
       void Function(Object error, StackTrace trace)? onError,
-      PrintType printType = PrintType.log}) {
+      PrintType printType = PrintType.print}) {
     _baseUrl = baseUrl ?? '';
     _header = header ??
         {'Accept': 'application/json', 'Content-Type': 'application/json'};

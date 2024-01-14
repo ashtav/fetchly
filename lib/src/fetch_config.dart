@@ -24,7 +24,7 @@ void Function(Object, StackTrace)? _onError;
 Map<String, CancelToken> _cancelTokens = {};
 
 // print type
-PrintType _printType = PrintType.log;
+PrintType _printType = PrintType.print;
 
 /// Get Dio options with configurable parameters.
 ///
