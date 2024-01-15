@@ -22,8 +22,7 @@ Map<LogColor, String> _colors = {
 /// String coloredValue = colorize('Hello', LogColor.red);
 /// print(coloredValue); // Prints the value 'Hello' in red color.
 /// ```
-String colorize(String value, LogColor color) =>
-    '\x1B[${_colors[color]}$value\x1B[0m';
+String colorize(String value, LogColor color) => '\x1B[${_colors[color]}$value\x1B[0m';
 
 /// Prints a log message with optional color, length limit, and name.
 ///
@@ -37,11 +36,7 @@ String colorize(String value, LogColor color) =>
 /// ```dart
 /// logg('lorem ipsum', color: LogColor.red, limit: 3000);
 /// ```
-logg(dynamic value,
-    {LogColor color = LogColor.yellow,
-    int limit = 500,
-    String? name,
-    bool nolimit = false}) {
+logg(dynamic value, {LogColor color = LogColor.yellow, int limit = 500, String? name, bool nolimit = false}) {
   // Get the string representation of the value
   String valueString = '$value';
 
@@ -58,9 +53,19 @@ logg(dynamic value,
   String message = colorize(subStr, color);
 
   // Add ellipsis if the substring is shorter than the original value
-  String logMessage =
-      subStr.length < valueString.length ? '$message.....' : message;
+  String logMessage = subStr.length < valueString.length ? '$message.....' : message;
 
   // Print the log message on the debug console
   log(logMessage, name: name ?? 'LOG');
+}
+
+/// Custom print function for development use only.
+/// Uses `assert` to ensure the print statement only executes in debug mode.
+/// In release mode, this function does nothing.
+void devPrint(Object? object) {
+  assert(() {
+    // ignore: avoid_print
+    print(object);
+    return true;
+  }());
 }

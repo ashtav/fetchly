@@ -15,6 +15,20 @@ part 'fetch_config.dart';
 part 'response_handler.dart';
 
 class Fetchly extends ResHandler {
+
+  /// Performs an HTTP request with specified parameters.
+  /// 
+  /// This method uses the Dio package to perform the HTTP request and handles
+  /// the response. It allows customization of the request through various parameters.
+  ///
+  /// [method] specifies the HTTP method (GET, POST, etc.).
+  /// [path] specifies the URL path for the request.
+  /// [query] (optional) contains the query parameters for the request.
+  /// [data] (optional) contains the body data to be sent with the request.
+  /// [onReceiveProgress] (optional) is a callback function for tracking progress.
+  ///
+  /// Returns a [ResHandler] object containing the response data and status.
+  
   Future<ResHandler> _fetch(String method, String path,
       {Map<String, dynamic>? query,
       dynamic data,

@@ -33,16 +33,14 @@ class ResHandler {
   final dynamic data, body;
   final Request? request;
 
-  ResHandler(
-      {this.status = false, this.message, this.data, this.body, this.request});
+  ResHandler({this.status = false, this.message, this.data, this.body, this.request});
 
   /// A function to check and process an HTTP response.
   ///
   /// This function is used to examine an HTTP response and process it based on
   /// various criteria, such as status code, response time, and an optional
   /// [onRequest] callback.
-  Future<ResHandler> check(Response response, int time,
-      {Function(int statusCode, dynamic data)? onRequest}) async {
+  Future<ResHandler> check(Response response, int time, {Function(int statusCode, dynamic data)? onRequest}) async {
     RequestOptions req = response.requestOptions;
 
     // request information
@@ -144,9 +142,7 @@ class ResHandler {
         // if property status is not found, make status code as the status
 
         if (map['status'] != null) {
-          ok = map['status'] is bool
-              ? map['status']
-              : okStatus.contains(statusCode);
+          ok = map['status'] is bool ? map['status'] : okStatus.contains(statusCode);
         } else {
           ok = okStatus.contains(statusCode);
         }
@@ -173,15 +169,23 @@ class ResHandler {
     }
 
     onRequest?.call(statusCode ?? 0, responseData);
+
+    // return the response
     return ResHandler(
         status: ok,
         message: message ?? response.statusMessage,
         data: data,
         body: responseData,
-        request:
-            Request(url: baseUrl + path, header: req.headers, log: logMessage));
+        request: Request(url: baseUrl + path, header: req.headers, log: logMessage));
   }
 
-  Map<String, dynamic> toMap() =>
-      {'status': status, 'message': message, 'data': data};
+  /// Converts the object to a map.
+  ///
+  /// This method is typically used for serialization purposes,
+  /// allowing the object to be represented as a key-value map.
+  /// It's useful when you need to send data over the network or store it in a format
+  /// that requires key-value pairs.
+  ///
+  /// Returns a [Map<String, dynamic>] containing the object's properties.
+  Map<String, dynamic> toMap() => {'status': status, 'message': message, 'data': data};
 }
