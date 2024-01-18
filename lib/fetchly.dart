@@ -13,5 +13,6 @@ library fetchly;
 
 export 'package:dio/dio.dart';
 
+export 'models/request.dart';
 export 'src/enum.dart';
 export 'src/fetch.dart';

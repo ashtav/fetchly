@@ -51,6 +51,12 @@ class _TodoViewState extends State<TodoView> {
     print(res.message);
   }
 
+  Future longRequest() async {
+    String url = 'https://httpbin.org/delay/5';
+    ResHandler res = await api.get(url);
+    print(res);
+  }
+
   @override
   void initState() {
     getTodos();
@@ -65,7 +71,7 @@ class _TodoViewState extends State<TodoView> {
         actions: [
           IconButton(
               onPressed: () {
-                error500();
+                longRequest();
               },
               icon: const Icon(Icons.error)),
           IconButton(
@@ -75,7 +81,7 @@ class _TodoViewState extends State<TodoView> {
               icon: const Icon(Icons.account_circle)),
           IconButton(
               onPressed: () {
-                api.cancel('todos');
+                api.cancel();
               },
               icon: const Icon(Icons.cancel))
         ],

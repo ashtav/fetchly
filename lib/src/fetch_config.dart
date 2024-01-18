@@ -15,13 +15,19 @@ Map<String, dynamic> _header = {
 };
 
 // manage request listener
-void Function(String path, int status, dynamic data)? _onRequest;
+void Function(Request request)? _onRequest;
 
 // manage error listener
 void Function(Object, StackTrace)? _onError;
 
 // manage dio token
 Map<String, CancelToken> _cancelTokens = {};
+
+// manage current token
+CancelToken? _currentToken;
+
+// manage current path
+String? _currentPath;
 
 // print type
 PrintType _printType = PrintType.print;

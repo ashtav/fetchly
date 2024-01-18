@@ -1,9 +1,10 @@
+import 'package:fetchly/fetchly.dart';
 import 'package:fetchly/utils/log.dart';
 
 class RequestHandler {
-  static onRequest(String path, int status, dynamic data) {
-    // here we can check response from server and do something
-    // for example:
+  static onRequest(Request request) {
+    int status = request.status;
+    dynamic data = request.data;
 
     if (![200, 201].contains(status)) {
       // do something, such as send error to developer

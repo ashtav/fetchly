@@ -15,9 +15,8 @@ part 'fetch_config.dart';
 part 'response_handler.dart';
 
 class Fetchly extends ResHandler {
-
   /// Performs an HTTP request with specified parameters.
-  /// 
+  ///
   /// This method uses the Dio package to perform the HTTP request and handles
   /// the response. It allows customization of the request through various parameters.
   ///
@@ -28,7 +27,7 @@ class Fetchly extends ResHandler {
   /// [onReceiveProgress] (optional) is a callback function for tracking progress.
   ///
   /// Returns a [ResHandler] object containing the response data and status.
-  
+
   Future<ResHandler> _fetch(String method, String path,
       {Map<String, dynamic>? query,
       dynamic data,
@@ -37,6 +36,8 @@ class Fetchly extends ResHandler {
     Stopwatch stopWatch = Stopwatch();
 
     _cancelTokens[path] = CancelToken();
+    _currentToken = _cancelTokens[path];
+    _currentPath = path;
 
     try {
       stopWatch.start();
@@ -57,9 +58,13 @@ class Fetchly extends ResHandler {
 
       stopWatch.stop();
       result = await check(response, stopWatch.elapsed.inMilliseconds,
-          onRequest: (status, data) {
-        _onRequest?.call(path, status, data);
+          onRequest: (request) {
+        _onRequest?.call(request);
       });
+    } on DioException catch (e, s) {
+      if (![DioExceptionType.cancel].contains(e.type)) {
+        _onError?.call(e, s);
+      }
     } catch (e, s) {
       _onError?.call(e, s);
     } finally {
@@ -122,12 +127,54 @@ class Fetchly extends ResHandler {
     return await MultipartFile.fromFile(path);
   }
 
-  /// ``` dart
-  /// cancel('<path>');
+  /// Cancels an ongoing HTTP request.
+  ///
+  /// This method is used to cancel an ongoing HTTP request that is associated
+  /// with a specific path or the current request if no path is provided. When
+  /// a path is provided, it looks up the corresponding cancellation token and
+  /// uses it to cancel the request. If no path is provided, it cancels the
+  /// current request.
+  ///
+  /// The cancellation of the request is logged for debugging purposes.
+  ///
+  /// Usage:
+  /// To cancel a specific request:
+  /// ```dart
+  /// cancel('path/to/request');
   /// ```
+  ///
+  /// To cancel the current request (if no other path is specified):
+  /// ```dart
+  /// cancel();
+  /// ```
+  ///
+  /// Parameters:
+  /// - [path] (optional): The path of the request to be canceled. If no path
+  ///   is provided, the current request is canceled.
+  ///
+  /// Note: The cancellation token associated with the path (if provided) is
+  /// removed from the tracking list after the cancellation.
 
-  void cancel(String path) {
-    _cancelTokens[path]?.cancel('Request for $path is canceled');
+  void cancel([String? path]) {
+    final token = _cancelTokens[path];
+
+    // cancel specific request
+    if (path != null && token != null) {
+      token.cancel('Request for $path is canceled');
+      logg('Request for $path is canceled', name: 'Fetchly');
+
+      // remove cancel token
+      _cancelTokens.remove(path);
+      _currentToken = null;
+    }
+
+    // cancel current request
+    else if (_currentToken != null) {
+      _currentToken?.cancel('Request is canceled');
+      logg('Request for $_currentPath is canceled', name: 'Fetchly');
+
+      _currentToken = null;
+    }
   }
 
   /// ``` dart
@@ -137,7 +184,7 @@ class Fetchly extends ResHandler {
   static void init(
       {String? baseUrl,
       Map<String, dynamic>? header,
-      void Function(String path, int status, dynamic data)? onRequest,
+      void Function(Request request)? onRequest,
       void Function(Object error, StackTrace trace)? onError,
       PrintType printType = PrintType.print}) {
     _baseUrl = baseUrl ?? '';
