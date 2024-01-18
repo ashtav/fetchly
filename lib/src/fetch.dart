@@ -14,34 +14,48 @@ part 'extension.dart';
 part 'fetch_config.dart';
 part 'response_handler.dart';
 
+/// The `Fetchly` class extends `ResHandler` to handle HTTP requests.
 class Fetchly extends ResHandler {
-  /// Performs an HTTP request with specified parameters.
+  /// Performs an HTTP request using the Dio package with specified parameters.
   ///
-  /// This method uses the Dio package to perform the HTTP request and handles
-  /// the response. It allows customization of the request through various parameters.
+  /// This method manages the entire lifecycle of an HTTP request from
+  /// sending the request to handling the response. It's designed to be
+  /// flexible, allowing various customizations for the request.
   ///
-  /// [method] specifies the HTTP method (GET, POST, etc.).
-  /// [path] specifies the URL path for the request.
-  /// [query] (optional) contains the query parameters for the request.
-  /// [data] (optional) contains the body data to be sent with the request.
-  /// [onReceiveProgress] (optional) is a callback function for tracking progress.
+  /// [method]: The HTTP method to be used (GET, POST, etc.).
+  /// [path]: The URL path for the request.
+  /// [query]: Optional. Contains query parameters for the request.
+  /// [data]: Optional. Contains the body data to be sent with the request.
+  /// [onReceiveProgress]: Optional. A callback function for tracking progress.
   ///
-  /// Returns a [ResHandler] object containing the response data and status.
+  /// The method utilizes a `CancelToken` for each path, allowing requests to be cancelled.
+  /// It also uses a `Stopwatch` to measure the duration of the request.
+  ///
+  /// Error handling is done using `try-catch` blocks, specifically catching `DioException`.
+  /// On completion or error, the relevant cancel token is removed.
+  ///
+  /// Returns: A `ResHandler` object containing the response status and data.
+  ///
+  /// Note: `_cancelTokens` should be defined to store and manage `CancelToken` instances.
+  /// `dio` should be an instance of the Dio client with configured options.
 
   Future<ResHandler> _fetch(String method, String path,
-      {Map<String, dynamic>? query,
-      dynamic data,
-      Function(int, int)? onReceiveProgress}) async {
+      {Map<String, dynamic>? query, dynamic data, Function(int, int)? onReceiveProgress}) async {
     ResHandler result = ResHandler(status: false);
     Stopwatch stopWatch = Stopwatch();
 
+    // Assigning a CancelToken for the request based on the path.
     _cancelTokens[path] = CancelToken();
     _currentToken = _cancelTokens[path];
     _currentPath = path;
 
     try {
+      // Starting the stopwatch to measure request time.
       stopWatch.start();
+
+      // Making the HTTP request with provided parameters and Dio options.
       Response response = await dio.fetch(RequestOptions(
+          // RequestOptions configured with the provided parameters and Dio's default settings.
           baseUrl: dio.options.baseUrl,
           method: method,
           path: path,
@@ -57,17 +71,21 @@ class Fetchly extends ResHandler {
           cancelToken: _cancelTokens[path]));
 
       stopWatch.stop();
-      result = await check(response, stopWatch.elapsed.inMilliseconds,
-          onRequest: (request) {
+
+      // Processing the response.
+      result = await check(response, stopWatch.elapsed.inMilliseconds, onRequest: (request) {
         _onRequest?.call(request);
       });
     } on DioException catch (e, s) {
+      // Handling Dio-specific exceptions.
       if (![DioExceptionType.cancel].contains(e.type)) {
         _onError?.call(e, s);
       }
     } catch (e, s) {
+      // General error handling.
       _onError?.call(e, s);
     } finally {
+      // Cleanup: removing the CancelToken for this path.
       _cancelTokens.remove(path);
     }
 
@@ -79,11 +97,8 @@ class Fetchly extends ResHandler {
   /// ```
 
   Future<ResHandler> fetch(String method, String path,
-      {Map<String, dynamic>? query,
-      dynamic data,
-      Function(int, int)? onReceiveProgress}) async {
-    return await _fetch(method, path,
-        query: query, data: data, onReceiveProgress: onReceiveProgress);
+      {Map<String, dynamic>? query, dynamic data, Function(int, int)? onReceiveProgress}) async {
+    return await _fetch(method, path, query: query, data: data, onReceiveProgress: onReceiveProgress);
   }
 
   /// ``` dart
@@ -98,19 +113,15 @@ class Fetchly extends ResHandler {
   /// ResHandler res = await post('user', {'name': 'John Doe'});
   /// ```
 
-  Future<ResHandler> post(String path, dynamic data,
-          {bool useFormData = false}) async =>
-      await _fetch('POST', path,
-          data: useFormData ? FormData.fromMap(data) : data);
+  Future<ResHandler> post(String path, dynamic data, {bool useFormData = false}) async =>
+      await _fetch('POST', path, data: useFormData ? FormData.fromMap(data) : data);
 
   /// ``` dart
   /// ResHandler res = await put('user/1', {'name': 'John Doe'});
   /// ```
 
-  Future<ResHandler> put(String path, dynamic data,
-          {bool useFormData = false}) async =>
-      await _fetch('PUT', path,
-          data: useFormData ? FormData.fromMap(data) : data);
+  Future<ResHandler> put(String path, dynamic data, {bool useFormData = false}) async =>
+      await _fetch('PUT', path, data: useFormData ? FormData.fromMap(data) : data);
 
   /// ``` dart
   /// ResHandler res = await delete('user/1');
@@ -162,18 +173,12 @@ class Fetchly extends ResHandler {
     if (path != null && token != null) {
       token.cancel('Request for $path is canceled');
       logg('Request for $path is canceled', name: 'Fetchly');
-
-      // remove cancel token
-      _cancelTokens.remove(path);
-      _currentToken = null;
     }
 
     // cancel current request
     else if (_currentToken != null) {
       _currentToken?.cancel('Request is canceled');
       logg('Request for $_currentPath is canceled', name: 'Fetchly');
-
-      _currentToken = null;
     }
   }
 
@@ -188,8 +193,7 @@ class Fetchly extends ResHandler {
       void Function(Object error, StackTrace trace)? onError,
       PrintType printType = PrintType.print}) {
     _baseUrl = baseUrl ?? '';
-    _header = header ??
-        {'Accept': 'application/json', 'Content-Type': 'application/json'};
+    _header = header ?? {'Accept': 'application/json', 'Content-Type': 'application/json'};
     _onRequest = onRequest;
     _onError = onError;
     _printType = printType;

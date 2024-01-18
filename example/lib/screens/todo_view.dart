@@ -57,6 +57,12 @@ class _TodoViewState extends State<TodoView> {
     print(res);
   }
 
+  Future testRequest() async {
+    String url = 'http://hagios.gerejanya.com/api/page';
+    ResHandler res = await api.get(url);
+    print(res.data);
+  }
+
   @override
   void initState() {
     getTodos();
@@ -71,7 +77,7 @@ class _TodoViewState extends State<TodoView> {
         actions: [
           IconButton(
               onPressed: () {
-                longRequest();
+                error500();
               },
               icon: const Icon(Icons.error)),
           IconButton(

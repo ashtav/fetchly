@@ -9,10 +9,7 @@ part of fetch;
 String _baseUrl = '';
 
 // manage header
-Map<String, dynamic> _header = {
-  'Accept': 'application/json',
-  'Content-Type': 'application/json'
-};
+Map<String, dynamic> _header = {'Accept': 'application/json', 'Content-Type': 'application/json'};
 
 // manage request listener
 void Function(Request request)? _onRequest;
@@ -32,10 +29,18 @@ String? _currentPath;
 // print type
 PrintType _printType = PrintType.print;
 
-/// Get Dio options with configurable parameters.
+/// Creates a set of base options for Dio HTTP client.
 ///
-/// This method returns a [BaseOptions] object with various parameters
-/// set, including the base URL, headers, timeouts, and more for the Dio client.
+/// This function sets up basic configurations for the Dio client,
+/// useful for making HTTP requests. The options include disabling
+/// follow redirects, setting base URL, connection timeout, receive timeout,
+/// custom headers, response type, and a custom status validation.
+///
+/// [baseUrl] (optional): Allows specifying a base URL that will be used for each
+/// request made with the Dio client. If not provided, `_baseUrl` (a global variable)
+/// is used as the default.
+///
+/// Returns a `BaseOptions` object configured with the provided settings.
 BaseOptions dioOptions({String? baseUrl}) => BaseOptions(
     followRedirects: false,
     baseUrl: _baseUrl,
