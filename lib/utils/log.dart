@@ -1,4 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'dart:developer';
+
+import 'package:ansicolor/ansicolor.dart';
 
 /// Enum representing different log colors.
 enum LogColor { normal, yellow, blue, green, red, purple, cyan, brightBlue }
@@ -68,10 +72,24 @@ logg(dynamic value,
 /// Custom print function for development use only.
 /// Uses `assert` to ensure the print statement only executes in debug mode.
 /// In release mode, this function does nothing.
-void devPrint(Object? object) {
+void devPrint(Object? object, {int limit = 800}) {
   assert(() {
-    // ignore: avoid_print
-    print(object);
+    if (limit <= 0) {
+      print('Error: limit must be greater than 0');
+      return false;
+    }
+
+    ansiColorDisabled = false;
+    final pattern =
+        RegExp('.{1,$limit}'); // Membagi teks ke dalam chunk sesuai limit
+
+    pattern.allMatches(object.toString()).forEach((match) {
+      final matchedString = match.group(0);
+      if (matchedString != null) {
+        print(matchedString);
+      }
+    });
+
     return true;
   }());
 }

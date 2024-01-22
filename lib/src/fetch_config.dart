@@ -9,7 +9,10 @@ part of fetch;
 String _baseUrl = '';
 
 // manage header
-Map<String, dynamic> _header = {'Accept': 'application/json', 'Content-Type': 'application/json'};
+Map<String, dynamic> _header = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+};
 
 // manage request listener
 void Function(Request request)? _onRequest;
@@ -27,7 +30,10 @@ CancelToken? _currentToken;
 String? _currentPath;
 
 // print type
-PrintType _printType = PrintType.print;
+PrintType _printType = PrintType.log;
+
+// fetchly config
+FetchlyConfig _config = FetchlyConfig();
 
 /// Creates a set of base options for Dio HTTP client.
 ///
@@ -44,7 +50,7 @@ PrintType _printType = PrintType.print;
 BaseOptions dioOptions({String? baseUrl}) => BaseOptions(
     followRedirects: false,
     baseUrl: _baseUrl,
-    connectTimeout: const Duration(seconds: 60),
+    connectTimeout: Duration(seconds: _config.timeout),
     receiveTimeout: const Duration(seconds: 200),
     headers: _header,
     responseType: ResponseType.plain,

@@ -22,18 +22,4 @@ extension DioCustomExtension on Dio {
     dio.options.headers['authorization'] =
         prefix == null ? 'Bearer $token' : '$prefix $token';
   }
-
-  /// The character limit for logging HTTP request/response data.
-  ///
-  /// This property specifies the maximum character limit for logging
-  /// HTTP request and response data. Requests or responses exceeding
-  /// this limit will be truncated in log messages.
-  ///
-  /// Example usage:
-  /// ```dart
-  /// Dio dio = Dio();
-  /// int limit = dio.logLimit;
-  /// ```
-
-  int get logLimit => 2000;
 }

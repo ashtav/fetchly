@@ -35,7 +35,8 @@ class _TodoViewState extends State<TodoView> {
   Future login() async {
     try {
       log('-- loading');
-      ResHandler res = await api.login({'username': 'kminchelle', 'password': '0lelplR'});
+      ResHandler res =
+          await api.login({'username': 'kminchelle', 'password': '0lelplR'});
 
       log(res.toMap().toString());
       log('------ ${res.message}');
@@ -95,7 +96,8 @@ class _TodoViewState extends State<TodoView> {
                       (i) => Container(
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
-                              color: i % 2 == 0 ? Colors.grey[100] : Colors.white,
+                              color:
+                                  i % 2 == 0 ? Colors.grey[100] : Colors.white,
                             ),
                             child: Text(todos[i]['todo']),
                           )),

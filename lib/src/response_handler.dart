@@ -104,20 +104,21 @@ class ResHandler {
       String dtBaseUrl = '== $dateTime | $baseUrl';
       logMessage = '$dtBaseUrl\n$debugMessage';
 
-      if (_printType == PrintType.log) {
-        logg('\n$dtBaseUrl');
-        logg(debugMessage, color: LogColor.cyan, limit: dio.logLimit);
-      } else if (_printType == PrintType.print) {
-        ansiColorDisabled = false;
-        AnsiPen pen = AnsiPen()..cyan(),
-            pen2 = AnsiPen()
-              ..white()
-              ..cyan(bg: true);
+      ansiColorDisabled = false;
+      final pen = AnsiPen()
+        ..white()
+        ..cyan(bg: true);
 
-        devPrint(pen2(dtBaseUrl));
+      final pen2 = AnsiPen()..cyan();
+
+      if (_printType == PrintType.log) {
+        logg(pen(dtBaseUrl));
+        logg(pen2(debugMessage), limit: _config.printLimit);
+      } else if (_printType == PrintType.print) {
+        devPrint(pen(dtBaseUrl));
 
         debugMessage.split('\n').forEach((line) {
-          devPrint(pen(line));
+          devPrint(pen2(line), limit: _config.printLimit);
         });
       }
     }
