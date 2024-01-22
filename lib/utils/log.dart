@@ -41,11 +41,11 @@ String colorize(String value, LogColor color) =>
 /// ```dart
 /// logg('lorem ipsum', color: LogColor.red, limit: 3000);
 /// ```
-logg(dynamic value,
+Future logg(dynamic value,
     {LogColor color = LogColor.yellow,
     int limit = 500,
     String? name,
-    bool nolimit = false}) {
+    bool nolimit = false}) async {
   // Get the string representation of the value
   String valueString = '$value';
 
@@ -72,7 +72,7 @@ logg(dynamic value,
 /// Custom print function for development use only.
 /// Uses `assert` to ensure the print statement only executes in debug mode.
 /// In release mode, this function does nothing.
-void devPrint(Object? object, {int limit = 800}) {
+Future devPrint(Object? object, {int limit = 800}) async {
   assert(() {
     if (limit <= 0) {
       print('Error: limit must be greater than 0');
