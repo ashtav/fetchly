@@ -34,12 +34,10 @@ class _TodoViewState extends State<TodoView> {
 
   Future login() async {
     try {
-      log('-- loading');
       ResHandler res =
           await api.login({'username': 'kminchelle', 'password': '0lelplR'});
 
       log(res.toMap().toString());
-      log('------ ${res.message}');
     } catch (e, s) {
       print('Error: $e, StackTrace: $s');
     }

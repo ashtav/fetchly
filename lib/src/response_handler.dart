@@ -112,13 +112,13 @@ class ResHandler {
       final pen2 = AnsiPen()..cyan();
 
       if (_printType == PrintType.log) {
-        await logg(pen(dtBaseUrl));
-        await logg(pen2(debugMessage), limit: _config.printLimit);
+        logg(pen(dtBaseUrl));
+        logg(pen2(debugMessage), limit: _config.printLimit);
       } else if (_printType == PrintType.print) {
-        await devPrint(pen(dtBaseUrl));
+        devPrint(pen(dtBaseUrl));
 
         debugMessage.split('\n').forEach((line) async {
-          await devPrint(pen2(line), limit: _config.printLimit);
+          devPrint(pen2(line), limit: _config.printLimit);
         });
       }
     }

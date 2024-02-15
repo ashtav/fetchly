@@ -117,22 +117,20 @@ class Fetchly extends ResHandler {
   }
 
   /// ``` dart
-  /// ResHandler res = await post('user', {'name': 'John Doe'});
+  /// final payload = {'name': 'John Doe'};
+  /// ResHandler res = await post('user', payload);
+  /// ResHandler res = await post('user', payload.toFormData());
   /// ```
 
-  Future<ResHandler> post(String path, dynamic data,
-          {bool useFormData = false}) async =>
-      await _fetch('POST', path,
-          data: useFormData ? FormData.fromMap(data) : data);
+  Future<ResHandler> post(String path, [dynamic data]) async =>
+      await _fetch('POST', path, data: data ?? {});
 
   /// ``` dart
   /// ResHandler res = await put('user/1', {'name': 'John Doe'});
   /// ```
 
-  Future<ResHandler> put(String path, dynamic data,
-          {bool useFormData = false}) async =>
-      await _fetch('PUT', path,
-          data: useFormData ? FormData.fromMap(data) : data);
+  Future<ResHandler> put(String path, [dynamic data]) async =>
+      await _fetch('PUT', path, data: data ?? {});
 
   /// ``` dart
   /// ResHandler res = await delete('user/1');

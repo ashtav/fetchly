@@ -50,8 +50,8 @@ FetchlyConfig _config = FetchlyConfig();
 BaseOptions dioOptions({String? baseUrl}) => BaseOptions(
     followRedirects: false,
     baseUrl: _baseUrl,
-    connectTimeout: Duration(seconds: _config.timeout),
-    receiveTimeout: const Duration(seconds: 200),
+    connectTimeout: Duration(seconds: _config.connectTimeout),
+    receiveTimeout: Duration(seconds: _config.receiveTimeout),
     headers: _header,
     responseType: ResponseType.plain,
     validateStatus: (status) => status! <= 598);
