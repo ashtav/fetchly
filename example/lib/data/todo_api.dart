@@ -11,4 +11,8 @@ class TodoApi extends Fetchly {
       // print('$a $b');
     });
   }
+
+  Future<ResHandler> test() async {
+    return await get('/');
+  }
 }

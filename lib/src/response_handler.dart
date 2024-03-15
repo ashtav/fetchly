@@ -51,6 +51,14 @@ class ResHandler {
         path = req.path,
         statusMessage = response.statusMessage ?? 'No status message';
 
+    // if the path contains http, we need to parse it to get the base url and path
+    Uri uri = Uri.parse(path);
+
+    if (uri.scheme.contains('http')) {
+      baseUrl = '${uri.scheme}://${uri.host}';
+      path = uri.path;
+    }
+
     int? statusCode = response.statusCode;
     dynamic responseData = response.data;
 
