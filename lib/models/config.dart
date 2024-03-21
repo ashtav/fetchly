@@ -39,4 +39,21 @@ class FetchlyConfig {
       {this.connectTimeout = 60,
       this.receiveTimeout = 200,
       this.printLimit = 2500});
+
+  /// Creates a new instance of FetchlyConfig by copying the current instance and
+  /// replacing specified values with new ones.
+  ///
+  /// Returns a new FetchlyConfig instance with updated values. If a parameter
+  /// is not provided, its value remains the same as in the current instance.
+  FetchlyConfig copyWith({
+    int? connectTimeout,
+    int? receiveTimeout,
+    int? printLimit,
+  }) {
+    return FetchlyConfig(
+      connectTimeout: connectTimeout ?? this.connectTimeout,
+      receiveTimeout: receiveTimeout ?? this.receiveTimeout,
+      printLimit: printLimit ?? this.printLimit,
+    );
+  }
 }

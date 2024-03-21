@@ -143,8 +143,8 @@ class Fetchly extends ResHandler {
   /// final file = await toFile(path);
   /// ```
 
-  Future<MultipartFile> toFile(String path) async {
-    return await MultipartFile.fromFile(path);
+  Future<MultipartFile> toFile(String path, {String? filename}) async {
+    return await MultipartFile.fromFile(path, filename: filename);
   }
 
   /// Cancels an ongoing HTTP request.
@@ -223,5 +223,13 @@ class Fetchly extends ResHandler {
     }
 
     _header = header;
+  }
+
+  /// ``` dart
+  /// Fetchly.setPrintLimit(5000);
+  /// ```
+
+  static void setPrintLimit(int value) {
+    _config = _config.copyWith(printLimit: value);
   }
 }
