@@ -33,14 +33,16 @@ class ResHandler {
   final dynamic data, body;
   final Request? request;
 
-  ResHandler({this.status = false, this.message, this.data, this.body, this.request});
+  ResHandler(
+      {this.status = false, this.message, this.data, this.body, this.request});
 
   /// A function to check and process an HTTP response.
   ///
   /// This function is used to examine an HTTP response and process it based on
   /// various criteria, such as status code, response time, and an optional
   /// [onRequest] callback.
-  Future<ResHandler> check(Response response, int time, {Function(Request request)? onRequest}) async {
+  Future<ResHandler> check(Response response, int time,
+      {Function(Request request)? onRequest}) async {
     RequestOptions req = response.requestOptions;
 
     // request information
@@ -160,7 +162,9 @@ class ResHandler {
         // if property status is not found, make status code as the status
 
         if (map['status'] != null) {
-          ok = map['status'] is bool ? map['status'] : okStatus.contains(statusCode);
+          ok = map['status'] is bool
+              ? map['status']
+              : okStatus.contains(statusCode);
         } else {
           ok = okStatus.contains(statusCode);
         }
@@ -186,14 +190,23 @@ class ResHandler {
       }
     }
 
-    final request =
-        Request(url: baseUrl, path: path, status: statusCode ?? 0, header: req.headers, data: data, log: logMessage);
+    final request = Request(
+        url: baseUrl,
+        path: path,
+        status: statusCode ?? 0,
+        header: req.headers,
+        data: data,
+        log: logMessage);
 
     onRequest?.call(request);
 
     // return the response
     return ResHandler(
-        status: ok, message: message ?? response.statusMessage, data: data, body: responseData, request: request);
+        status: ok,
+        message: message ?? response.statusMessage,
+        data: data,
+        body: responseData,
+        request: request);
   }
 
   /// Converts the object to a map.
@@ -204,5 +217,6 @@ class ResHandler {
   /// that requires key-value pairs.
   ///
   /// Returns a [Map<String, dynamic>] containing the object's properties.
-  Map<String, dynamic> toMap() => {'status': status, 'message': message, 'data': data};
+  Map<String, dynamic> toMap() =>
+      {'status': status, 'message': message, 'data': data};
 }
