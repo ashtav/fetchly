@@ -62,7 +62,7 @@ class ResHandler {
     int? statusCode = response.statusCode;
     dynamic responseData = response.data;
 
-    Map<String, dynamic> query = req.queryParameters;
+    Map<String, dynamic> query = req.queryParameters.isEmpty ? uri.queryParameters : req.queryParameters;
 
     // TIME REQUEST ----------------------------------------------------------------------------------------------------
     // get the time request
