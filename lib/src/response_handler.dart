@@ -193,6 +193,9 @@ class ResHandler {
     final request = Request(
         url: baseUrl,
         path: path,
+        method: method,
+        query: query,
+        payload: requestOptions,
         status: statusCode ?? 0,
         header: req.headers,
         data: data,

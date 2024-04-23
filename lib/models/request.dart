@@ -20,12 +20,25 @@ class Request {
   /// Optional log data for additional information.
   final dynamic log;
 
+  /// HTTP method for the request, default is 'GET'.
+  final String method;
+
+  /// Payload data for the request.
+  final dynamic payload;
+
+  /// Query parameters for the request.
+  final dynamic query;
+
   /// Constructor with required `url` and `header`, and optional `log`.
-  Request(
-      {required this.url,
-      required this.path,
-      required this.status,
-      required this.header,
-      this.data,
-      this.log});
+  Request({
+    required this.url,
+    required this.path,
+    required this.status,
+    required this.header,
+    this.data,
+    this.log,
+    this.method = 'GET',
+    this.payload,
+    this.query,
+  });
 }
