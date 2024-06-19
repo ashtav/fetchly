@@ -41,7 +41,9 @@ class Fetchly extends ResHandler {
   /// `dio` should be an instance of the Dio client with configured options.
 
   Future<ResHandler> _fetch(String method, String path,
-      {Map<String, dynamic>? query, dynamic data, Function(int, int)? onReceiveProgress}) async {
+      {Map<String, dynamic>? query,
+      dynamic data,
+      Function(int, int)? onReceiveProgress}) async {
     ResHandler result = ResHandler(status: false);
     Stopwatch stopWatch = Stopwatch();
 
@@ -74,7 +76,8 @@ class Fetchly extends ResHandler {
       stopWatch.stop();
 
       // Processing the response.
-      result = await check(response, stopWatch.elapsed.inMilliseconds, onRequest: (request) {
+      result = await check(response, stopWatch.elapsed.inMilliseconds,
+          onRequest: (request) {
         _onRequest?.call(request);
       });
     } on DioException catch (e, s) {
@@ -98,8 +101,11 @@ class Fetchly extends ResHandler {
   /// ```
 
   Future<ResHandler> fetch(String method, String path,
-      {Map<String, dynamic>? query, dynamic data, Function(int, int)? onReceiveProgress}) async {
-    return await _fetch(method, path, query: query, data: data, onReceiveProgress: onReceiveProgress);
+      {Map<String, dynamic>? query,
+      dynamic data,
+      Function(int, int)? onReceiveProgress}) async {
+    return await _fetch(method, path,
+        query: query, data: data, onReceiveProgress: onReceiveProgress);
   }
 
   /// ``` dart
@@ -116,13 +122,15 @@ class Fetchly extends ResHandler {
   /// ResHandler res = await post('user', payload.toFormData());
   /// ```
 
-  Future<ResHandler> post(String path, [dynamic data]) async => await _fetch('POST', path, data: data ?? {});
+  Future<ResHandler> post(String path, [dynamic data]) async =>
+      await _fetch('POST', path, data: data ?? {});
 
   /// ``` dart
   /// ResHandler res = await put('user/1', {'name': 'John Doe'});
   /// ```
 
-  Future<ResHandler> put(String path, [dynamic data]) async => await _fetch('PUT', path, data: data ?? {});
+  Future<ResHandler> put(String path, [dynamic data]) async =>
+      await _fetch('PUT', path, data: data ?? {});
 
   /// ``` dart
   /// ResHandler res = await delete('user/1');
@@ -195,7 +203,8 @@ class Fetchly extends ResHandler {
       PrintType printType = PrintType.log,
       FetchlyConfig? config}) {
     _baseUrl = baseUrl ?? '';
-    _header = header ?? {'Accept': 'application/json', 'Content-Type': 'application/json'};
+    _header = header ??
+        {'Accept': 'application/json', 'Content-Type': 'application/json'};
     _onRequest = onRequest;
     _onError = onError;
     _printType = printType;
