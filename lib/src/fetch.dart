@@ -219,10 +219,11 @@ class Fetchly extends ResHandler {
     if (merge) {
       // prevent duplicate header
       header.removeWhere((key, value) => _header.containsKey(key));
-      return _header.addAll(header);
+      _header.addAll(header);
+    } else {
+      _header = header;
     }
 
-    _header = header;
     dio.options.headers = _header;
   }
 

@@ -19,6 +19,12 @@ class FetchlyConfig {
   /// it will be truncated. The default print limit is 2500 characters.
   final int printLimit;
 
+  /// Flag indicating whether to show HTTP headers in logs.
+  ///
+  /// If set to true, HTTP headers will be printed in the logs.
+  /// The default value is false.
+  final bool showHeader;
+
   /// Constructs a FetchlyConfig instance with optional parameters.
   ///
   /// The [connectTimeout] parameter specifies the connectTimeout duration for HTTP requests,
@@ -31,6 +37,9 @@ class FetchlyConfig {
   /// If the body exceeds this limit, it will be truncated. The default print limit
   /// is 2500 characters.
   ///
+  /// The [showHeader] parameter specifies whether HTTP headers should be printed in the logs.
+  /// The default value is false.
+  ///
   /// Example usage:
   /// ```dart
   /// FetchlyConfig config = FetchlyConfig(connectTimeout: 30, printLimit: 2000);
@@ -38,22 +47,24 @@ class FetchlyConfig {
   FetchlyConfig(
       {this.connectTimeout = 60,
       this.receiveTimeout = 200,
-      this.printLimit = 2500});
+      this.printLimit = 2500,
+      this.showHeader = false});
 
   /// Creates a new instance of FetchlyConfig by copying the current instance and
   /// replacing specified values with new ones.
   ///
   /// Returns a new FetchlyConfig instance with updated values. If a parameter
   /// is not provided, its value remains the same as in the current instance.
-  FetchlyConfig copyWith({
-    int? connectTimeout,
-    int? receiveTimeout,
-    int? printLimit,
-  }) {
+  FetchlyConfig copyWith(
+      {int? connectTimeout,
+      int? receiveTimeout,
+      int? printLimit,
+      bool? showHeader}) {
     return FetchlyConfig(
       connectTimeout: connectTimeout ?? this.connectTimeout,
       receiveTimeout: receiveTimeout ?? this.receiveTimeout,
       printLimit: printLimit ?? this.printLimit,
+      showHeader: showHeader ?? this.showHeader,
     );
   }
 }

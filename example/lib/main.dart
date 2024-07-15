@@ -11,7 +11,7 @@ void main() {
       onRequest: RequestHandler.onRequest,
       onError: RequestHandler.onError,
       printType: PrintType.print,
-      config: FetchlyConfig(printLimit: 3000));
+      config: FetchlyConfig(printLimit: 3000, showHeader: true));
 
   // to set token in header when user logged in
   dio.setToken('token_value');

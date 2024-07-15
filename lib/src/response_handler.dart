@@ -97,17 +97,27 @@ class ResHandler {
     }
 
     String requestInfo = '$path, $statusCode ($statusMessage), $timeRequest';
-    List<String> consoleMessages = [
-      '[$method] $requestInfo',
-      'query: $query',
-      'body: $requestOptions',
-      'response: $responseData'
-    ];
+    Map<String, dynamic> mapInfo = {'request': '[$method] $requestInfo'};
 
-    if (query.isEmpty) consoleMessages.removeAt(1);
-    if (requestOptions.isEmpty || requestOptions == 'null') {
-      consoleMessages.removeAt(consoleMessages.length == 3 ? 1 : 2);
+    // show headers
+    if (_config.showHeader) {
+      mapInfo['header'] = 'headers: ${req.headers}';
     }
+
+    // show body
+    if (!['', 'null', null].contains(requestOptions)) {
+      mapInfo['body'] = 'body: $requestOptions';
+    }
+
+    // show query
+    if (query.isNotEmpty) {
+      mapInfo['query'] = 'query: $query';
+    }
+
+    mapInfo['response'] = 'response: $responseData';
+
+    List<String> consoleMessages =
+        mapInfo.keys.map((k) => mapInfo[k].toString()).toList();
 
     String debugMessage = consoleMessages.map((e) => '-- $e\n').join();
     String logMessage = '';

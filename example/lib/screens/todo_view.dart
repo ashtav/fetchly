@@ -45,7 +45,7 @@ class _TodoViewState extends State<TodoView> {
 
   Future error500() async {
     String url = 'http://httpstat.us/500';
-    ResHandler res = await api.get(url);
+    ResHandler res = await api.get(url, {'id': 1});
     print(res.message);
   }
 
