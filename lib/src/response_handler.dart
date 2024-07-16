@@ -101,7 +101,14 @@ class ResHandler {
 
     // show headers
     if (_config.showHeader) {
-      mapInfo['header'] = 'headers: ${req.headers}';
+      String header = req.headers.toString();
+      int headerLimit = _config.headerLimit;
+
+      header = header.length > headerLimit
+          ? '${header.substring(0, headerLimit)}...${header.substring(header.length - 10, header.length)}'
+          : header;
+
+      mapInfo['header'] = 'headers: $header';
     }
 
     // show body

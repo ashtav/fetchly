@@ -44,6 +44,11 @@ class _TodoViewState extends State<TodoView> {
   }
 
   Future error500() async {
+    Fetchly.setHeader({
+      'Authorization':
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkxpdmluZyBXZWIsInBlcm1pc3Npb25zIjpbImFkbWluIiwidXNlciJdfQ.sIu_tDKeaKWGNxQ3EY-8P7cL-a7_WJFLYxx-Qp_Zq5Y'
+    }, merge: false);
+
     String url = 'http://httpstat.us/500';
     ResHandler res = await api.get(url, {'id': 1});
     print(res.message);

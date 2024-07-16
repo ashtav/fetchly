@@ -19,6 +19,12 @@ class FetchlyConfig {
   /// it will be truncated. The default print limit is 2500 characters.
   final int printLimit;
 
+  /// Limit for printing HTTP headers.
+  ///
+  /// When logging HTTP headers, if the header content exceeds this limit,
+  /// it will be truncated. The default header limit is null, meaning no truncation.
+  final int headerLimit;
+
   /// Flag indicating whether to show HTTP headers in logs.
   ///
   /// If set to true, HTTP headers will be printed in the logs.
@@ -37,6 +43,10 @@ class FetchlyConfig {
   /// If the body exceeds this limit, it will be truncated. The default print limit
   /// is 2500 characters.
   ///
+  /// The [headerLimit] parameter specifies the limit for printing HTTP headers.
+  /// If the header content exceeds this limit, it will be truncated. The default
+  /// header limit is 120 characters.
+  ///
   /// The [showHeader] parameter specifies whether HTTP headers should be printed in the logs.
   /// The default value is false.
   ///
@@ -48,6 +58,7 @@ class FetchlyConfig {
       {this.connectTimeout = 60,
       this.receiveTimeout = 200,
       this.printLimit = 2500,
+      this.headerLimit = 120,
       this.showHeader = false});
 
   /// Creates a new instance of FetchlyConfig by copying the current instance and
@@ -59,12 +70,14 @@ class FetchlyConfig {
       {int? connectTimeout,
       int? receiveTimeout,
       int? printLimit,
+      int? headerLimit,
       bool? showHeader}) {
     return FetchlyConfig(
       connectTimeout: connectTimeout ?? this.connectTimeout,
       receiveTimeout: receiveTimeout ?? this.receiveTimeout,
       printLimit: printLimit ?? this.printLimit,
       showHeader: showHeader ?? this.showHeader,
+      headerLimit: headerLimit ?? this.headerLimit,
     );
   }
 }
