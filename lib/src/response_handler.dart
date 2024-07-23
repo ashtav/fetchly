@@ -1,7 +1,3 @@
-// Author: Ashta
-// Last Modified: 2023/07/31 11:21:21
-// Description: Handles the response from the server
-
 // Why do we need Response Handler?
 // 1. Adjust the response to our needs (status, message, data)
 // 2. Handle error from the server
@@ -164,7 +160,7 @@ class ResHandler {
     // adjust the response data to our needs
 
     String? message;
-    dynamic data;
+    dynamic dataBody;
 
     if (responseData != null) {
       try {
@@ -173,7 +169,7 @@ class ResHandler {
 
         // get the status, message, and data from the response
         message = map['message'] ?? 'No message found';
-        data = map['data'];
+        dataBody = map['data'];
 
         // check property status in the response
         // if property status is not found, make status code as the status
@@ -215,7 +211,7 @@ class ResHandler {
         payload: requestOptions,
         status: statusCode ?? 0,
         header: req.headers,
-        data: data,
+        data: dataBody,
         log: logMessage);
 
     onRequest?.call(request);
@@ -224,7 +220,7 @@ class ResHandler {
     return ResHandler(
         status: ok,
         message: message ?? response.statusMessage,
-        data: data,
+        data: dataBody,
         body: responseData,
         request: request);
   }
