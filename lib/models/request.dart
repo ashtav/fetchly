@@ -29,7 +29,7 @@ class Request {
   /// Query parameters for the request.
   final dynamic query;
 
-  /// Constructor with required `url` and `header`, and optional `log`.
+  /// Constructor with required `url`, `path`, `status`, and `header`, and optional `log`.
   Request({
     required this.url,
     required this.path,
@@ -41,4 +41,24 @@ class Request {
     this.payload,
     this.query,
   });
+
+  /// Converts the object to a map.
+  ///
+  /// This method is typically used for serialization purposes,
+  /// allowing the object to be represented as a key-value map.
+  /// It's useful when you need to send data over the network or store it in a format
+  /// that requires key-value pairs.
+  ///
+  /// Returns a [Map<String, dynamic>] containing the object's properties.
+  Map<String, dynamic> toMap() => {
+        'url': url,
+        'path': path,
+        'status': status,
+        'header': header,
+        'data': data,
+        'log': log,
+        'method': method,
+        'payload': payload,
+        'query': query,
+      };
 }

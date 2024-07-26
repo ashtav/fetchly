@@ -1,20 +1,8 @@
-// Why do we need Response Handler?
-// 1. Adjust the response to our needs (status, message, data)
-// 2. Handle error from the server
-// 3. Show the request information and response in debug console
-
-// The response must be in this format:
-// {
-//   "status": true,
-//   "message": "Data has been loaded",
-//   "data": [] or {},
-// }
-
 part of fetch;
 
 /// A utility class for handling HTTP response data.
 ///
-/// The `ResHandler` class is used to encapsulate information commonly found in
+/// The `Response` class is used to encapsulate information commonly found in
 /// HTTP responses, such as status, messages, data, and the raw response body.
 ///
 /// Parameters:
@@ -23,13 +11,13 @@ part of fetch;
 ///   - [data]: The data payload of the response.
 ///   - [body]: The raw response body, which can be of any data type.
 
-class ResHandler {
+class ResponseHandler {
   final bool status;
   final String? message;
   final dynamic data, body;
   final Request? request;
 
-  ResHandler(
+  ResponseHandler(
       {this.status = false, this.message, this.data, this.body, this.request});
 
   /// A function to check and process an HTTP response.
@@ -37,9 +25,9 @@ class ResHandler {
   /// This function is used to examine an HTTP response and process it based on
   /// various criteria, such as status code, response time, and an optional
   /// [onRequest] callback.
-  Future<ResHandler> check(Response response, int time,
+  Future<Response> check(_dio.Response response, int time,
       {Function(Request request)? onRequest}) async {
-    RequestOptions req = response.requestOptions;
+    _dio.RequestOptions req = response.requestOptions;
 
     // request information
     String baseUrl = req.baseUrl,
@@ -79,7 +67,7 @@ class ResHandler {
 
     String requestOptions = req.data.toString();
 
-    if (req.data is FormData) {
+    if (req.data is _dio.FormData) {
       dynamic fields = req.data.fields;
       requestOptions += ' | ';
 
@@ -217,22 +205,11 @@ class ResHandler {
     onRequest?.call(request);
 
     // return the response
-    return ResHandler(
+    return Response(
         status: ok,
         message: message ?? response.statusMessage,
         data: dataBody,
         body: responseData,
         request: request);
   }
-
-  /// Converts the object to a map.
-  ///
-  /// This method is typically used for serialization purposes,
-  /// allowing the object to be represented as a key-value map.
-  /// It's useful when you need to send data over the network or store it in a format
-  /// that requires key-value pairs.
-  ///
-  /// Returns a [Map<String, dynamic>] containing the object's properties.
-  Map<String, dynamic> toMap() =>
-      {'status': status, 'message': message, 'data': data};
 }

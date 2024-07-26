@@ -21,7 +21,7 @@ class _TodoViewState extends State<TodoView> {
 
   Future getTodos() async {
     try {
-      ResHandler res = await api.getTodos();
+      Response res = await api.getTodos();
       todos = res.body?['todos'] ?? [];
     } catch (e, s) {
       print('Error: $e, StackTrace: $s');
@@ -34,7 +34,7 @@ class _TodoViewState extends State<TodoView> {
 
   Future login() async {
     try {
-      ResHandler res =
+      Response res =
           await api.login({'username': 'kminchelle', 'password': '0lelplR'});
 
       log(res.toMap().toString());
@@ -50,13 +50,13 @@ class _TodoViewState extends State<TodoView> {
     }, merge: false);
 
     String url = 'http://httpstat.us/500';
-    ResHandler res = await api.get(url, {'id': 1});
+    Response res = await api.get(url, {'id': 1});
     print(res.message);
   }
 
   Future longRequest() async {
     String url = 'https://httpbin.org/delay/5';
-    ResHandler res = await api.get(url);
+    Response res = await api.get(url);
     print(res);
   }
 

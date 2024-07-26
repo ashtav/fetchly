@@ -21,10 +21,10 @@ void Function(Request request)? _onRequest;
 void Function(Object, StackTrace)? _onError;
 
 // manage dio token
-Map<String, CancelToken> _cancelTokens = {};
+Map<String, _dio.CancelToken> _cancelTokens = {};
 
 // manage current token
-CancelToken? _currentToken;
+_dio.CancelToken? _currentToken;
 
 // manage current path
 String? _currentPath;
@@ -47,17 +47,17 @@ FetchlyConfig _config = FetchlyConfig();
 /// is used as the default.
 ///
 /// Returns a `BaseOptions` object configured with the provided settings.
-BaseOptions dioOptions({String? baseUrl}) => BaseOptions(
+_dio.BaseOptions dioOptions({String? baseUrl}) => _dio.BaseOptions(
     followRedirects: false,
     baseUrl: _baseUrl,
     connectTimeout: Duration(seconds: _config.connectTimeout),
     receiveTimeout: Duration(seconds: _config.receiveTimeout),
     headers: _header,
-    responseType: ResponseType.plain,
+    responseType: _dio.ResponseType.plain,
     validateStatus: (status) => status! <= 598);
 
 /// The Dio client instance with the configured options.
 ///
 /// This Dio client instance is initialized with the Dio options
 /// configured in [dioOptions].
-Dio dio = Dio(dioOptions());
+_dio.Dio dio = _dio.Dio(dioOptions());

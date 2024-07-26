@@ -1,6 +1,5 @@
 import 'package:example/request_handler.dart';
 import 'package:fetchly/fetchly.dart';
-import 'package:fetchly/models/config.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/todo_view.dart';

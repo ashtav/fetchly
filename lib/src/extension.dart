@@ -5,7 +5,7 @@ part of fetch;
 /// This extension adds additional functionality to the Dio client
 /// for handling tokens and logging limits.
 
-extension DioCustomExtension on Dio {
+extension DioCustomExtension on _dio.Dio {
   /// Set an authentication token in the HTTP headers.
   ///
   /// Use this method to easily set an authentication token in the headers
@@ -65,10 +65,10 @@ extension FetchlyMapExtension on Map<String, dynamic> {
   /// Map<String, dynamic> payload = {'name': 'John Doe'};
   /// FormData formData = payload.toFormData();
   /// ```
-  FormData toFormData(
-      [ListFormat collectionFormat = ListFormat.multi,
+  _dio.FormData toFormData(
+      [_dio.ListFormat collectionFormat = _dio.ListFormat.multi,
       bool camelCaseContentDisposition = false]) {
-    return FormData.fromMap(
+    return _dio.FormData.fromMap(
         this, collectionFormat, camelCaseContentDisposition);
   }
 }

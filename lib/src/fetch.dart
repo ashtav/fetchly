@@ -1,22 +1,25 @@
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+
 library fetch;
 
 import 'dart:convert';
 
 import 'package:ansicolor/ansicolor.dart';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as _dio;
 import 'package:fetchly/models/request.dart';
 import 'package:fetchly/src/enum.dart';
 import 'package:fetchly/utils/utils.dart';
 
 import '../models/config.dart';
+import '../models/response.dart';
 import '../utils/log.dart';
 
 part 'extension.dart';
 part 'fetch_config.dart';
 part 'response_handler.dart';
 
-/// The `Fetchly` class extends `ResHandler` to handle HTTP requests.
-class Fetchly extends ResHandler {
+/// The `Fetchly` class extends `Response` to handle HTTP requests.
+class Fetchly extends ResponseHandler {
   /// Performs an HTTP request using the Dio package with specified parameters.
   ///
   /// This method manages the entire lifecycle of an HTTP request from
@@ -35,20 +38,20 @@ class Fetchly extends ResHandler {
   /// Error handling is done using `try-catch` blocks, specifically catching `DioException`.
   /// On completion or error, the relevant cancel token is removed.
   ///
-  /// Returns: A `ResHandler` object containing the response status and data.
+  /// Returns: A `Response` object containing the response status and data.
   ///
   /// Note: `_cancelTokens` should be defined to store and manage `CancelToken` instances.
   /// `dio` should be an instance of the Dio client with configured options.
 
-  Future<ResHandler> _fetch(String method, String path,
+  Future<Response> _fetch(String method, String path,
       {Map<String, dynamic>? query,
       dynamic data,
       Function(int, int)? onReceiveProgress}) async {
-    ResHandler result = ResHandler(status: false);
+    Response result = Response(status: false);
     Stopwatch stopWatch = Stopwatch();
 
     // Assigning a CancelToken for the request based on the path.
-    _cancelTokens[path] = CancelToken();
+    _cancelTokens[path] = _dio.CancelToken();
     _currentToken = _cancelTokens[path];
     _currentPath = path;
 
@@ -57,7 +60,7 @@ class Fetchly extends ResHandler {
       stopWatch.start();
 
       // Making the HTTP request with provided parameters and Dio options.
-      Response response = await dio.fetch(RequestOptions(
+      _dio.Response response = await dio.fetch(_dio.RequestOptions(
           // RequestOptions configured with the provided parameters and Dio's default settings.
           baseUrl: dio.options.baseUrl,
           method: method,
@@ -80,9 +83,9 @@ class Fetchly extends ResHandler {
           onRequest: (request) {
         _onRequest?.call(request);
       });
-    } on DioException catch (e, s) {
+    } on _dio.DioException catch (e, s) {
       // Handling Dio-specific exceptions.
-      if (![DioExceptionType.cancel].contains(e.type)) {
+      if (![_dio.DioExceptionType.cancel].contains(e.type)) {
         _onError?.call(e, s);
       }
     } catch (e, s) {
@@ -97,10 +100,10 @@ class Fetchly extends ResHandler {
   }
 
   /// ``` dart
-  /// ResHandler res = await fetch('GET', 'user', onReceiveProgress: (a, b) {});
+  /// Response res = await fetch('GET', 'user', onReceiveProgress: (a, b) {});
   /// ```
 
-  Future<ResHandler> fetch(String method, String path,
+  Future<Response> fetch(String method, String path,
       {Map<String, dynamic>? query,
       dynamic data,
       Function(int, int)? onReceiveProgress}) async {
@@ -109,42 +112,42 @@ class Fetchly extends ResHandler {
   }
 
   /// ``` dart
-  /// ResHandler res = await get('user');
+  /// Response res = await get('user');
   /// ```
 
-  Future<ResHandler> get(String path, [Map<String, dynamic>? query]) async {
+  Future<Response> get(String path, [Map<String, dynamic>? query]) async {
     return await _fetch('GET', path, query: query);
   }
 
   /// ``` dart
   /// final payload = {'name': 'John Doe'};
-  /// ResHandler res = await post('user', payload);
-  /// ResHandler res = await post('user', payload.toFormData());
+  /// Response res = await post('user', payload);
+  /// Response res = await post('user', payload.toFormData());
   /// ```
 
-  Future<ResHandler> post(String path, [dynamic data]) async =>
+  Future<Response> post(String path, [dynamic data]) async =>
       await _fetch('POST', path, data: data ?? {});
 
   /// ``` dart
-  /// ResHandler res = await put('user/1', {'name': 'John Doe'});
+  /// Response res = await put('user/1', {'name': 'John Doe'});
   /// ```
 
-  Future<ResHandler> put(String path, [dynamic data]) async =>
+  Future<Response> put(String path, [dynamic data]) async =>
       await _fetch('PUT', path, data: data ?? {});
 
   /// ``` dart
-  /// ResHandler res = await delete('user/1');
+  /// Response res = await delete('user/1');
   /// ```
 
-  Future<ResHandler> delete(String path) async => await _fetch('DELETE', path);
+  Future<Response> delete(String path) async => await _fetch('DELETE', path);
 
   /// ``` dart
   /// String path = '/storage/emulated/0/Download/1.jpg';
   /// final file = await toFile(path);
   /// ```
 
-  Future<MultipartFile> toFile(String path, {String? filename}) async {
-    return await MultipartFile.fromFile(path, filename: filename);
+  Future<_dio.MultipartFile> toFile(String path, {String? filename}) async {
+    return await _dio.MultipartFile.fromFile(path, filename: filename);
   }
 
   /// Cancels an ongoing HTTP request.
