@@ -3,23 +3,7 @@ part of fetch;
 /// A utility class for handling HTTP response data.
 ///
 /// The `Response` class is used to encapsulate information commonly found in
-/// HTTP responses, such as status, messages, data, and the raw response body.
-///
-/// Parameters:
-///   - [status]: A boolean indicating the status of the response. Default is `false`.
-///   - [message]: An optional message associated with the response.
-///   - [data]: The data payload of the response.
-///   - [body]: The raw response body, which can be of any data type.
-
 class ResponseHandler {
-  final bool status;
-  final String? message;
-  final dynamic data, body;
-  final Request? request;
-
-  ResponseHandler(
-      {this.status = false, this.message, this.data, this.body, this.request});
-
   /// A function to check and process an HTTP response.
   ///
   /// This function is used to examine an HTTP response and process it based on
