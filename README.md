@@ -69,4 +69,24 @@ Fetchly.init();
 Fetchly.setHeader({});
 ```
 
+## Commands
+
+Fetchly provides a set of commands to manage your project files and directories effectively. These commands help you create, remove, and clean up files and directories within your app setup.
+
+
+Generates a new file with the specified `filename`, such as configuration files or API endpoints.
+```shell
+dart run fetchly:create filename
+```
+Deletes the file with the specified filename, helping you maintain a clean project by removing unnecessary files.
+```shell
+dart run fetchly:remove filename
+```
+Clears out the API directory by removing old or unused API files, resetting the project’s API structure
+```shell
+dart run fetchly:clean
+```
+
+
+
 For more information and examples, see the [example](https://github.com/ashtav/fetchly/tree/master/example).
