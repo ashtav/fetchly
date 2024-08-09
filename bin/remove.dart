@@ -37,11 +37,13 @@ void main(List<String> args) {
 
     // Generate part and class content to remove
     final partLine = "part '$fileName.dart';";
-    final apiInstanceLine = "  ${toPascalCase(fileName)}Api ${toCamelCase(fileName)} = ${toPascalCase(fileName)}Api();\n";
+    final apiInstanceLine =
+        "  ${toPascalCase(fileName)}Api ${toCamelCase(fileName)} = ${toPascalCase(fileName)}Api();\n";
 
     // Remove the part line and class instance from Api
     final updatedContent = existingContent
-        .replaceAll(RegExp(RegExp.escape(partLine) + r'\n'), '') // Use partLine correctly
+        .replaceAll(RegExp(RegExp.escape(partLine) + r'\n'),
+            '') // Use partLine correctly
         .replaceAll(apiInstanceLine, '');
 
     // Write the updated content back to the api.dart file

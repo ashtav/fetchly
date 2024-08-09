@@ -1,3 +1,4 @@
-## 0.1.1
+## 0.2.0
 
 * improvement and bug fixes
+* command tools

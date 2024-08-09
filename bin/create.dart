@@ -36,7 +36,8 @@ class ${className}Api extends Fetchly {
 
   if (file.existsSync()) {
     if (args.length == 1) {
-      print('File ${fileName.split('/').last} already exists at lib/$filePath.dart.');
+      print(
+          'File ${fileName.split('/').last} already exists at lib/$filePath.dart.');
       return;
     } else {
       if (args[1] != '-f') {
@@ -47,7 +48,8 @@ class ${className}Api extends Fetchly {
 
   file.createSync(recursive: true);
   file.writeAsStringSync(content);
-  print('File ${fileName.split('/').last} created successfully at lib/$filePath.dart.');
+  print(
+      'File ${fileName.split('/').last} created successfully at lib/$filePath.dart.');
 
   // Check if api.dart exists in app/data/apis
   final apiFile = File('lib/$defaultPath/api.dart');
@@ -78,7 +80,8 @@ mixin class Apis {
 
     // Generate part and class content for the new API
     final partLine = "part '$fileName.dart';";
-    final apiInstanceLine = "  ${className}Api ${toCamelCase(fileName)} = ${className}Api();";
+    final apiInstanceLine =
+        "  ${className}Api ${toCamelCase(fileName)} = ${className}Api();";
 
     // Check if the part line already exists
     if (!existingContent.contains(partLine)) {

@@ -1,6 +1,3 @@
-  import 'package:fetchly/fetchly.dart';
+import 'package:fetchly/fetchly.dart';
 
-  class UserApi extends Fetchly {
-
-  }
-  
+class UserApi extends Fetchly {}
