@@ -1,15 +1,15 @@
 name: fetchly
 description: Fetchly provides a streamlined and user-friendly approach to
   harnessing the power of Dio within your Flutter applications.
-version: 0.2.0
+version: 0.3.0
 homepage: https://github.com/ashtav/fetchly
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: ">=3.1.0 <4.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
-  ansicolor: ^2.0.2
+  ansicolor: ^2.0.3
   dio: ^5.3.2
   flutter:
     sdk: flutter

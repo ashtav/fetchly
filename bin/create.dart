@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:fetchly/utils/strings.dart';
 
 void main(List<String> args) {
+  // check if arguments is available
   if (args.isEmpty) {
     print('Please provide a name for the API class.');
     return;
@@ -17,21 +18,13 @@ void main(List<String> args) {
   const defaultPath = 'app/data/apis';
   final filePath = value.contains('/') ? value : '$defaultPath/$fileName';
 
-  final content = '''
-part of 'api.dart';
-
-class ${className}Api extends Fetchly {
-
-}
-  ''';
-
   // Ensure the lib directory exists
   final file = File('lib/$filePath.dart');
 
   // Ignore if the file name is 'api'
   if (fileName == 'api') {
-    print('Cannot create the file named api.dart, please use another name.');
-    return;
+    return print(
+        'Cannot create the file named api.dart, please use another name.');
   }
 
   if (file.existsSync()) {
@@ -46,13 +39,24 @@ class ${className}Api extends Fetchly {
     }
   }
 
+  // preparing file content
+  final content = '''
+part of 'api.dart';
+
+class ${className}Api extends Fetchly {
+
+}''';
+
   file.createSync(recursive: true);
   file.writeAsStringSync(content);
   print(
       'File ${fileName.split('/').last} created successfully at lib/$filePath.dart.');
 
+  // CREATE SECOND FILES -------------------------------------------------------------
+
   // Check if api.dart exists in app/data/apis
   final apiFile = File('lib/$defaultPath/api.dart');
+
   if (!apiFile.existsSync()) {
     // If api.dart does not exist, create it with the specified content
     final apiContent = '''
@@ -78,17 +82,28 @@ mixin class Apis {
     // If api.dart exists, update its content
     final existingContent = apiFile.readAsStringSync();
 
-    // Generate part and class content for the new API
+    // Check if 'import fetchly' is missing and add it
+    bool hasImport =
+        existingContent.contains("import 'package:fetchly/fetchly.dart';");
+
+    /// Generate part and class content for the new API
     final partLine = "part '$fileName.dart';";
     final apiInstanceLine =
         "  ${className}Api ${toCamelCase(fileName)} = ${className}Api();";
 
     // Check if the part line already exists
     if (!existingContent.contains(partLine)) {
-      final updatedContent = existingContent.replaceFirst(
-        'part \'',
-        '$partLine\npart \'',
-      );
+      // Check if we need to add 'import fetchly' or not
+      final updatedContent = hasImport
+          // Add part line after 'import fetchly' if it exists, without extra newlines
+          ? existingContent.replaceFirst(
+              "import 'package:fetchly/fetchly.dart';\n",
+              "import 'package:fetchly/fetchly.dart';\n\n$partLine")
+          // Add 'import fetchly' and part line if not found, without extra newlines
+          : existingContent
+              .replaceFirst('library api;',
+                  "library api;\n\nimport 'package:fetchly/fetchly.dart';\n\n$partLine")
+              .replaceFirst('$partLine\n', partLine);
 
       // Add the new API instance in the class Api
       final updatedApiInstanceContent = updatedContent.replaceFirst(
