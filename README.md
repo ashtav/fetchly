@@ -34,7 +34,7 @@ To make API requests, extend the Fetchly class and define your methods like so:
 import 'package:fetchly/fetchly.dart';
 
 class TodoApi extends Fetchly {
-  Future<ResHandler> getTodos() async => await get('todos');
+  Future<Response> getTodos() async => await get('todos');
 }
 ```
 
@@ -48,7 +48,7 @@ mixin Apis {
 
 class MyClass with Apis {
     Future getTodos() async {
-        ResHandler res = await todoApi.getTodos();
+        Response res = await todoApi.getTodos();
 
         // to cancel request, use
         todoApi.cancel('todos'); // todos is path name
