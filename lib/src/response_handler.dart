@@ -181,10 +181,11 @@ class ResponseHandler {
         method: method,
         query: query,
         payload: requestOptions,
-        status: statusCode ?? 0,
+        status: statusCode ?? 200,
         header: req.headers,
         data: dataBody,
-        log: logMessage);
+        log: logMessage,
+        timeRequest: timeRequest);
 
     onRequest?.call(request);
 

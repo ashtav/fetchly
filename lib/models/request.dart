@@ -29,18 +29,21 @@ class Request {
   /// Query parameters for the request.
   final dynamic query;
 
+  /// Time request
+  final String timeRequest;
+
   /// Constructor with required `url`, `path`, `status`, and `header`, and optional `log`.
-  Request({
-    required this.url,
-    required this.path,
-    required this.status,
-    required this.header,
-    this.data,
-    this.log,
-    this.method = 'GET',
-    this.payload,
-    this.query,
-  });
+  Request(
+      {required this.url,
+      required this.path,
+      required this.status,
+      required this.header,
+      this.data,
+      this.log,
+      this.method = 'GET',
+      this.payload,
+      this.query,
+      this.timeRequest = '0 ms'});
 
   /// Converts the object to a map.
   ///
