@@ -12,7 +12,8 @@
 library fetchly;
 
 export 'models/config.dart';
-export 'models/response.dart';
 export 'models/request.dart';
+export 'models/response.dart';
 export 'src/enum.dart';
 export 'src/fetch.dart';
+export 'utils/api_test.dart';

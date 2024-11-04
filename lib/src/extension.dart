@@ -1,4 +1,4 @@
-part of fetch;
+part of 'fetch.dart';
 
 /// A custom extension for the Dio HTTP client.
 ///

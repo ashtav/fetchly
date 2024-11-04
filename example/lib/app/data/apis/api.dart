@@ -11,4 +11,3 @@ class Api {
 mixin class Apis {
   Api api = Api();
 }
-    

@@ -3,9 +3,24 @@
 import 'dart:io';
 
 import 'package:fetchly/utils/strings.dart';
+import 'package:yaml/yaml.dart';
 
 void main(List<String> args) {
-  // check if arguments are available
+  // Read pubspec.yaml for configuration
+  final pubspec = File('pubspec.yaml');
+  if (!pubspec.existsSync()) {
+    print('Error: pubspec.yaml not found.');
+    return;
+  }
+
+  final pubspecContent = pubspec.readAsStringSync();
+  final yamlMap = loadYaml(pubspecContent);
+
+  // Get model_path from fetchly config in pubspec.yaml
+  final fetchlyConfig = yamlMap['fetchly'] as YamlMap?;
+  final defaultPath = fetchlyConfig?['model_path'] ?? 'app/data/models';
+
+  // Check if arguments are available
   if (args.isEmpty) {
     print('Invalid command! Try: dart run fetchly:model <model>');
     return;
@@ -19,8 +34,7 @@ void main(List<String> args) {
   final className = toPascalCase(parts.last); // Convert last part to PascalCase
 
   // Construct the base directory path
-  final baseDirectoryPath =
-      'lib/app/data/models/${parts.sublist(0, parts.length - 1).join('/')}';
+  final baseDirectoryPath = 'lib/$defaultPath/${parts.sublist(0, parts.length - 1).join('/')}';
   final baseDirectory = Directory(baseDirectoryPath);
 
   // Check if the base directory exists

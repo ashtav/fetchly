@@ -3,19 +3,30 @@
 import 'dart:io';
 
 import 'package:fetchly/utils/strings.dart';
+import 'package:yaml/yaml.dart';
 
 void main(List<String> args) {
+  final pubspec = File('pubspec.yaml');
+  if (!pubspec.existsSync()) {
+    print('Error: pubspec.yaml not found.');
+    return;
+  }
+
   // check if arguments is available
   if (args.isEmpty) {
     print('Please provide a name for the API class.');
     return;
   }
 
+  final pubspecContent = pubspec.readAsStringSync();
+  final yamlMap = loadYaml(pubspecContent);
+
   final value = args[0].trim();
   final fileName = toSnakeCase(value); // Convert to snake_case
   final className = toPascalCase(fileName); // Convert to PascalCase
 
-  const defaultPath = 'app/data/apis';
+  final fetchlyConfig = yamlMap['fetchly'] as YamlMap?;
+  final defaultPath = fetchlyConfig?['api_path'] ?? 'app/data/apis';
   final filePath = value.contains('/') ? value : '$defaultPath/$fileName';
 
   // Ensure the lib directory exists

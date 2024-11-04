@@ -1,4 +1,4 @@
-part of fetch;
+part of 'fetch.dart';
 
 /// A utility class for handling HTTP response data.
 ///

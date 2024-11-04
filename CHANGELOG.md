@@ -7,3 +7,7 @@
 
 * improvement and bug fixes
 * add time request in Request
+
+## 0.5.0
+
+* improvement and bug fixes
