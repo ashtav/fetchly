@@ -7,6 +7,17 @@ import 'package:flutter/material.dart';
 
 import '../app/data/apis/api.dart';
 
+class MyNotifier extends ChangeNotifier with Apis {
+  Future getData() async {
+    final res = await api.group([
+      api.todo.getTodos(),
+      api.todo.getTodos(),
+    ]);
+
+    print(res);
+  }
+}
+
 class TodoView extends StatefulWidget {
   const TodoView({super.key});
 
@@ -19,6 +30,8 @@ class _TodoViewState extends State<TodoView> {
 
   List<dynamic> todos = [];
   bool isLoading = true;
+
+  final notifier = MyNotifier();
 
   Future getTodos() async {
     try {
@@ -75,7 +88,8 @@ class _TodoViewState extends State<TodoView> {
         actions: [
           IconButton(
               onPressed: () {
-                error500();
+                // error500();
+                notifier.getData();
               },
               icon: const Icon(Icons.error)),
           IconButton(

@@ -16,4 +16,5 @@ export 'models/request.dart';
 export 'models/response.dart';
 export 'src/enum.dart';
 export 'src/fetch.dart';
+export 'utils/api_service.dart';
 export 'utils/api_test.dart';

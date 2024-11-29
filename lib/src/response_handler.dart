@@ -9,6 +9,7 @@ class ResponseHandler {
   /// This function is used to examine an HTTP response and process it based on
   /// various criteria, such as status code, response time, and an optional
   /// [onRequest] callback.
+  @protected
   Future<Response> check(_dio.Response response, int time,
       {Function(Request request)? onRequest}) async {
     _dio.RequestOptions req = response.requestOptions;

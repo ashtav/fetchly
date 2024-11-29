@@ -54,5 +54,6 @@ void main() {
 
   testFile.createSync(recursive: true);
   testFile.writeAsStringSync(testContent);
-  print('Test file ${fileName.split('/').last}_test.dart created successfully at test/${filePath}_test.dart.');
+  print(
+      'Test file ${fileName.split('/').last}_test.dart created successfully at test/${filePath}_test.dart.');
 }

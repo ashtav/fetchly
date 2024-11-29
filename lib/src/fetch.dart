@@ -9,6 +9,7 @@ import 'package:dio/dio.dart' as _dio;
 import 'package:fetchly/models/request.dart';
 import 'package:fetchly/src/enum.dart';
 import 'package:fetchly/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/config.dart';
 import '../models/response.dart';

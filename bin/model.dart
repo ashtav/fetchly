@@ -34,7 +34,8 @@ void main(List<String> args) {
   final className = toPascalCase(parts.last); // Convert last part to PascalCase
 
   // Construct the base directory path
-  final baseDirectoryPath = 'lib/$defaultPath/${parts.sublist(0, parts.length - 1).join('/')}';
+  final baseDirectoryPath =
+      'lib/$defaultPath/${parts.sublist(0, parts.length - 1).join('/')}';
   final baseDirectory = Directory(baseDirectoryPath);
 
   // Check if the base directory exists

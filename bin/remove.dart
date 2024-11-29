@@ -57,8 +57,9 @@ void main(List<String> args) {
         "  ${toPascalCase(fileName)}Api ${toCamelCase(fileName)} = ${toPascalCase(fileName)}Api();\n";
 
     // Remove the part line and class instance from the Api class
-    final updatedContent =
-        existingContent.replaceAll(RegExp(RegExp.escape(partLine) + r'\n'), '').replaceAll(apiInstanceLine, '');
+    final updatedContent = existingContent
+        .replaceAll(RegExp(RegExp.escape(partLine) + r'\n'), '')
+        .replaceAll(apiInstanceLine, '');
 
     // Write the updated content back to api.dart
     apiFile.writeAsStringSync(updatedContent.trim());

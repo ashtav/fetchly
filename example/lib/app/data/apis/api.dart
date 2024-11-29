@@ -4,7 +4,7 @@ import 'package:fetchly/fetchly.dart';
 
 part 'todo.dart';
 
-class Api {
+class Api extends ApiServices {
   TodoApi todo = TodoApi();
 }
 

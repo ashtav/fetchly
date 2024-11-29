@@ -55,7 +55,7 @@ void main(List<String> args) {
 part of 'api.dart';
 
 class ${className}Api extends Fetchly {
-
+  Future<Response> getData([Map<String, dynamic>? query]) async => get('path', query);
 }''';
 
   file.createSync(recursive: true);
@@ -77,7 +77,7 @@ import 'package:fetchly/fetchly.dart';
 
 part '$fileName.dart';
 
-class Api {
+class Api extends ApiServices {
   ${className}Api ${toCamelCase(fileName)} = ${className}Api();
 }
 

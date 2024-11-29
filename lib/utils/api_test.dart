@@ -19,7 +19,8 @@ class ApiTest {
   ///   - [response]: The HTTP response to validate.
   ///   - [deep]: If `true`, checks every element in arrays for a more thorough
   ///     validation. Default is `false`.
-  static Future<void> check(String jsonPath, Response response, {bool deep = false}) async {
+  static Future<void> check(String jsonPath, Response response,
+      {bool deep = false}) async {
     try {
       // Load JSON model file as a string
       final jsonStr = await rootBundle.loadString('assets/models/$jsonPath');
@@ -31,7 +32,8 @@ class ApiTest {
       bool isValidFormat = true;
 
       // Decode the response body as JSON
-      final data = response.body is String ? json.decode(response.body) : response.body;
+      final data =
+          response.body is String ? json.decode(response.body) : response.body;
 
       // Define basic request info for logging
       String path = response.request?.path ?? '/';
@@ -49,7 +51,8 @@ class ApiTest {
       ///   - [model]: The JSON model data to compare.
       ///   - [responseData]: The actual response data to check.
       ///   - [parentKey]: A string representing the current nested path.
-      void checkNested(Map<String, dynamic> model, Map<String, dynamic> responseData, String parentKey,
+      void checkNested(Map<String, dynamic> model,
+          Map<String, dynamic> responseData, String parentKey,
           {bool deep = false}) {
         model.forEach((key, value) {
           final fullKey = parentKey.isEmpty ? key : '$parentKey.$key';
@@ -62,7 +65,9 @@ class ApiTest {
 
             // Recursively check nested maps
             if (value is Map && responseValue is Map) {
-              checkNested(value.cast<String, dynamic>(), responseValue.cast<String, dynamic>(), fullKey, deep: deep);
+              checkNested(value.cast<String, dynamic>(),
+                  responseValue.cast<String, dynamic>(), fullKey,
+                  deep: deep);
             } else if (value is List && responseValue is List) {
               if (deep) {
                 // If deep is true, validate each array element individually
@@ -77,7 +82,8 @@ class ApiTest {
                       '$fullKey[$i]',
                       deep: deep,
                     );
-                  } else if (modelElement != null && modelElement.runtimeType != responseElement.runtimeType) {
+                  } else if (modelElement != null &&
+                      modelElement.runtimeType != responseElement.runtimeType) {
                     updatedDataType.add(
                         "Key '$fullKey[$i]' should be ${modelElement.runtimeType}, but received ${responseElement.runtimeType}");
                   }
@@ -94,14 +100,15 @@ class ApiTest {
                     '$fullKey[0]',
                     deep: deep,
                   );
-                } else if (modelElement.runtimeType != responseElement.runtimeType) {
+                } else if (modelElement.runtimeType !=
+                    responseElement.runtimeType) {
                   updatedDataType.add(
                       "Key '$fullKey[0]' should be ${modelElement.runtimeType}, but received ${responseElement.runtimeType}");
                 }
               }
             } else if (responseValue.runtimeType != value.runtimeType) {
-              updatedDataType
-                  .add("Key '$fullKey' should be ${value.runtimeType}, but received ${responseValue.runtimeType}");
+              updatedDataType.add(
+                  "Key '$fullKey' should be ${value.runtimeType}, but received ${responseValue.runtimeType}");
             }
           }
         });
@@ -115,12 +122,14 @@ class ApiTest {
         if (firstItem is Map<String, dynamic>) {
           checkNested(jsonData, firstItem, '', deep: deep);
         } else {
-          message += "⚠️  List does not contain a Map. Cannot perform key checks.\n";
+          message +=
+              "⚠️  List does not contain a Map. Cannot perform key checks.\n";
         }
       } else if (data is List && data.isEmpty) {
         message += "⚠️  Data is an empty List. No validation performed.\n";
       } else {
-        message += "⚠️  Unknown data format. Expected Map or List. Received '${data.runtimeType}' \n";
+        message +=
+            "⚠️  Unknown data format. Expected Map or List. Received '${data.runtimeType}' \n";
         isValidFormat = false;
       }
 
@@ -137,9 +146,11 @@ class ApiTest {
             message += '⚠️  Type changes:\n${updatedDataType.join('\n')}\n';
           }
 
-          message += 'This indicates that backend changes may impact the app.\n';
+          message +=
+              'This indicates that backend changes may impact the app.\n';
         } else {
-          message += '✅ JSON structure matches expected model. No issues found.\n';
+          message +=
+              '✅ JSON structure matches expected model. No issues found.\n';
         }
       }
 
