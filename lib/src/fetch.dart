@@ -245,4 +245,20 @@ class Fetchly extends ResponseHandler {
   static void setPrintLimit(int value) {
     _config = _config.copyWith(printLimit: value);
   }
+
+  /// Provides access to the shared [Dio] instance used for making HTTP requests.
+  ///
+  /// Use this getter to retrieve the configured [Dio] instance.
+  /// This instance can be reused across the application for network operations.
+  ///
+  /// Example:
+  /// ```dart
+  /// final dio = Fetchly.useDio;
+  /// dio.get('/endpoint').then((response) {
+  ///   print(response.data);
+  /// });
+  /// ```
+  static _dio.Dio get useDio {
+    return dio;
+  }
 }
