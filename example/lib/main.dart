@@ -13,7 +13,7 @@ void main() {
       config: FetchlyConfig(printLimit: 3000, showHeader: true));
 
   // to set token in header when user logged in
-  dio.setToken('token_value');
+  Fetchly.setToken('token_value');
 
   runApp(const MyApp());
 }

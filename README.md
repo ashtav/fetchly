@@ -42,17 +42,48 @@ In this code snippet, we're using Dart's mixin feature to create a reusable bloc
 
 ```dart
 mixin Apis {
-    TodoApi todoApi = TodoApi();
-    // other api
+  TodoApi todoApi = TodoApi();
+  // other api
 }
 
 class MyClass with Apis {
-    Future getTodos() async {
-        Response res = await todoApi.getTodos();
+  Future getTodos() async {
+    Response res = await todoApi.getTodos();
 
-        // to cancel request, use
-        todoApi.cancel('todos'); // todos is path name
-    }
+    // to cancel request, use
+    todoApi.cancel('todos'); // todos is path name
+  }
+}
+```
+
+Using the Fetchly API generator, you can run the command `dart run fetchly:create <filename>`, which will automatically generate code like this:
+
+```dart
+library api;
+
+import 'package:fetchly/fetchly.dart';
+
+part 'todo.dart';
+
+class Api extends ApiServices {
+  ProductApi todo = ProductApi();
+}
+
+mixin class Apis {
+  Api api = Api();
+}
+
+// example of how to use the API
+class MyClass with Apis {
+  Future getProduct() async {
+    Response res = await api.product.getProduct();
+
+    // grouping request api
+    List<Response> group = await api.group([
+      api.product.getCategory(),
+      api.product.getProduct()
+    ]);
+  }
 }
 ```
 
@@ -65,8 +96,13 @@ Provide some methods that you can use
 Fetchly.init(); 
 
 // The `setHeader` method is used to set headers such as Authorization.
-// You can also use dio.setToken('your_token') to set a token.
 Fetchly.setHeader({});
+
+/// The `setToken` method sets the authentication token.
+Fetchly.setToken('<your_token>');
+
+/// The `setPrintLimit` method limits the length of request/response logs.
+Fetchly.setPrintLimit(3000);
 ```
 
 ## Commands

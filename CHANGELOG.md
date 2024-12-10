@@ -19,3 +19,7 @@
 ## 0.5.2
 
 * improvement and bug fixes
+
+## 0.5.3
+
+* improvement and bug fixes

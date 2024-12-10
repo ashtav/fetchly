@@ -118,8 +118,8 @@ mixin class Apis {
 
       // Add the new API instance in the class Api
       final updatedApiInstanceContent = updatedContent.replaceFirst(
-        'class Api {',
-        'class Api {\n$apiInstanceLine',
+        'class Api extends ApiServices {',
+        'class Api extends ApiServices {\n$apiInstanceLine',
       );
 
       // Write the updated content back to the api.dart file
