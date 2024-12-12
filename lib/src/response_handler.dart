@@ -183,6 +183,7 @@ class ResponseHandler {
         query: query,
         payload: requestOptions,
         status: statusCode ?? 200,
+        message: response.statusMessage ?? '',
         header: req.headers,
         data: dataBody,
         log: logMessage,

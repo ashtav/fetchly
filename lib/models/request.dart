@@ -11,6 +11,9 @@ class Request {
   /// The status of the request.
   final int status;
 
+  /// The message of the request.
+  final String message;
+
   /// Headers for the request, usually containing metadata.
   final Map<String, dynamic> header;
 
@@ -37,6 +40,7 @@ class Request {
       {required this.url,
       required this.path,
       required this.status,
+      required this.message,
       required this.header,
       this.data,
       this.log,

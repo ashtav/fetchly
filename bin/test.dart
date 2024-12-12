@@ -2,19 +2,19 @@
 
 import 'dart:io';
 
-import 'package:fetchly/utils/strings.dart';
 import 'package:yaml/yaml.dart';
+
+import 'utils.dart';
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    print('Please provide a name for the API class.');
+    Print.error('Please provide a name for the API class.');
     return;
   }
 
-  // Baca nama package dari pubspec.yaml
   final pubspec = File('pubspec.yaml');
   if (!pubspec.existsSync()) {
-    print('Error: pubspec.yaml not found.');
+    Print.error('Error: pubspec.yaml not found.');
     return;
   }
 
@@ -22,38 +22,65 @@ void main(List<String> args) {
   final yamlMap = loadYaml(pubspecContent);
   final packageName = yamlMap['name'] as String;
 
-  final value = args[0].trim();
-  final fileName = toSnakeCase(value);
-  final className = toPascalCase(fileName);
+  final apiName = args[0];
+  final testDir = Directory('test/apis');
+  if (!testDir.existsSync()) {
+    testDir.createSync(recursive: true);
+    print('Created folder: ${testDir.path}');
+  }
 
-  const defaultPath = 'apis';
-  final filePath = value.contains('/') ? value : '$defaultPath/$fileName';
+  final apiFile = File('${testDir.path}/api.dart');
+  if (!apiFile.existsSync()) {
+    apiFile.writeAsStringSync(_apiFileContent);
+    print('Created file: ${apiFile.path}');
+  }
 
-  final testFile = File('test/${filePath}_test.dart');
-  final testContent = '''
+  final userTestFile = File('${testDir.path}/${apiName}_test.dart');
+  userTestFile
+      .writeAsStringSync(_generateUserTestContent(apiName, packageName));
+  print('Created file: ${userTestFile.path}');
+}
+
+const String _apiFileContent = '''
 import 'dart:io';
 
+import 'package:fetchly/fetchly.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:$packageName/app/data/apis/api.dart';
 
 class Http extends HttpOverrides {}
 
+String token = '';
+
+class ApiTest {
+  static T init<T>(T api) {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    HttpOverrides.global = Http();
+
+    Fetchly.init(baseUrl: '');
+    Fetchly.setToken(token);
+    return api;
+  }
+}
+''';
+
+String _generateUserTestContent(String apiName, String packageName) {
+  return '''
+import 'package:flutter_test/flutter_test.dart';
+import 'package:fetchly/fetchly.dart';
+import 'package:$packageName/app/data/apis/api.dart';
+
+
+import 'api.dart';
+
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  HttpOverrides.global = Http();
+  final api = ApiTest.init(${camelize(apiName)}Api());
 
-  final ${toCamelCase(fileName)}Api = ${className}Api();
-
-  group('${className}Api', () {
-    test('Describe your test here', () async {
-      
+  group('${camelize(apiName)}Api', () {
+    test('Check $apiName response match', () async {
+      final response = await api.getUser();
+      response.check('$apiName.json', deep: true);
     });
   });
 }
-  ''';
-
-  testFile.createSync(recursive: true);
-  testFile.writeAsStringSync(testContent);
-  print(
-      'Test file ${fileName.split('/').last}_test.dart created successfully at test/${filePath}_test.dart.');
+''';
 }
